@@ -29,7 +29,7 @@ include("./includes/sidebar.php");
         </div>
     </div>
 
-    <!-- Recent Comics -->
+    <!-- Recently Added Comics Table -->
     <div class="card bg-dark text-white p-3 mt-4">
         <h4>Recently Added Comics</h4>
         <table class="table table-dark table-striped">
@@ -39,13 +39,14 @@ include("./includes/sidebar.php");
                     <th>Author</th>
                     <th>Genre</th>
                     <th>Cover</th>
+                    <th>Read</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                include("../../dB/config.php"); // Ensure database connection
-                
-                $query = "SELECT * FROM comics ORDER BY id DESC LIMIT 5"; // Get latest comics
+                include("../../dB/config.php");
+
+                $query = "SELECT * FROM comics ORDER BY id DESC LIMIT 5";
                 $result = mysqli_query($conn, $query);
 
                 while ($row = mysqli_fetch_assoc($result)) {
@@ -54,6 +55,7 @@ include("./includes/sidebar.php");
                     echo "<td>{$row['author']}</td>";
                     echo "<td>{$row['genre']}</td>";
                     echo "<td><img src='{$row['cover']}' alt='Comic Cover' class='comic-cover'></td>";
+                    echo "<td><a href='{$row['url']}' target='_blank' class='btn btn-primary btn-sm'>Click here</a></td>";
                     echo "</tr>";
                 }
                 ?>
@@ -74,10 +76,25 @@ include("./includes/sidebar.php");
                     <input type="text" class="form-control" name="author" placeholder="Author" required>
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="genre" placeholder="Genre" required>
+                    <select class="form-control" name="genre" required>
+                        <option value="" disabled selected>Select Genre</option>
+                        <option value="Action">Action</option>
+                        <option value="Adventure">Adventure</option>
+                        <option value="Comedy">Comedy</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Fantasy">Fantasy</option>
+                        <option value="Horror">Horror</option>
+                        <option value="Mystery">Mystery</option>
+                        <option value="Sci-Fi">Sci-Fi</option>
+                        <option value="Superhero">Superhero</option>
+                        <option value="Thriller">Thriller</option>
+                    </select>
                 </div>
                 <div class="col-md-3">
                     <input type="file" class="form-control" name="comic_cover" required>
+                </div>
+                <div class="col-md-3 mt-2">
+                    <input type="url" class="form-control" name="comic_url" placeholder="Comic URL (e.g., https://readcomic.com)" required>
                 </div>
                 <div class="col-md-3 mt-2">
                     <button type="submit" class="btn btn-warning">Add Comic</button>
@@ -85,6 +102,7 @@ include("./includes/sidebar.php");
             </div>
         </form>
     </div>
+
 
 </div>
 
