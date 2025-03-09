@@ -9,13 +9,13 @@ include("./includes/sidebar.php");
 
     <!-- Search & Filter Options -->
     <div class="mb-3">
-        <input type="text" class="form-control" placeholder="Search users..." style="max-width: 300px; display: inline-block;">
-        <select class="form-control" style="max-width: 200px; display: inline-block;">
+        <input type="text" id="search-input" class="form-control" placeholder="Search users..." style="max-width: 300px; display: inline-block;">
+        <select id="role-filter" class="form-control" style="max-width: 200px; display: inline-block;">
             <option value="">Filter by Role</option>
             <option value="Admin">Admin</option>
             <option value="User">User</option>
         </select>
-        <button class="btn btn-primary">Search</button>
+        <button class="btn btn-primary" onclick="fetchUsers()">Search</button>
     </div>
 
     <!-- Users Table -->
@@ -32,36 +32,12 @@ include("./includes/sidebar.php");
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- Sample Data (Replace with Database Query) -->
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>1</td>
-                    <td>JohnDoe</td>
-                    <td>johndoe@example.com</td>
-                    <td>Admin</td>
-                    <td>
-                        <a href="edit_user.php?id=1" class="btn btn-warning btn-sm">Edit</a>
-                        <button class="btn btn-danger btn-sm">Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>2</td>
-                    <td>JaneSmith</td>
-                    <td>janesmith@example.com</td>
-                    <td>User</td>
-                    <td>
-                        <a href="edit_user.php?id=2" class="btn btn-warning btn-sm">Edit</a>
-                        <button class="btn btn-danger btn-sm">Delete</button>
-                    </td>
-                </tr>
-                <!-- More rows dynamically loaded from database -->
+            <tbody id="user-list"> <!-- Dynamic data goes here -->
             </tbody>
         </table>
     </div>
 
-    <!-- Add User Form -->
+    <!-- Add User Form
     <div class="card bg-dark text-white p-3 mt-4">
         <h4>Add New User</h4>
         <form action="#" method="POST">
@@ -81,11 +57,62 @@ include("./includes/sidebar.php");
                 </div>
                 <div class="col-md-3">
                     <button type="submit" class="btn btn-primary">Add User</button>
-                </div>
+                </div>  
             </div>
         </form>
     </div>
+    -->
 </div>
+
+<script>
+    function fetchUsers() {
+        let searchQuery = document.getElementById("search-input").value;
+        let roleFilter = document.getElementById("role-filter").value;
+
+        fetch(`fetch_users.php?search=${searchQuery}&role=${roleFilter}`)
+            .then(response => response.json())
+            .then(data => {
+                let userTable = document.getElementById("user-list");
+                userTable.innerHTML = ""; // Clear existing data
+
+                data.forEach((user, index) => {
+                    let row = `
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>${index + 1}</td>
+                            <td>${user.firstName} ${user.lastName}</td>
+                            <td>${user.email}</td>
+                            <td>${user.role}</td>
+                            <td>
+                                <a href="edit_user.php?id=${user.userId}" class="btn btn-warning btn-sm">Edit</a>
+                                <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.userId})">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                    userTable.innerHTML += row; // Append row to table
+                });
+            })
+            .catch(error => console.error('Error fetching users:', error));
+    }
+
+    function deleteUser(userId) {
+        if (confirm("Are you sure you want to delete this user?")) {
+            fetch("delete_user.php?id=" + userId, { method: "GET" })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data); // Show success/error message
+                    fetchUsers(); // Refresh user list
+                })
+                .catch(error => console.error('Error deleting user:', error));
+        }
+    }
+
+    document.getElementById("search-input").addEventListener("keyup", fetchUsers);
+    document.getElementById("role-filter").addEventListener("change", fetchUsers);
+
+    fetchUsers(); // Fetch users on page load
+    setInterval(fetchUsers, 5000); // Refresh every 5 seconds
+</script>
 
 <?php
 include("./includes/footer.php");

@@ -10,19 +10,19 @@ include("./includes/sidebar.php");
     <!-- Quick Stats -->
     <div class="row">
         <div class="col-md-4">
-            <div class="card bg-primary text-white p-3">
+            <div class="card bg-black text-white p-3">
                 <h4>Total Comics</h4>
                 <p id="total-comics">Loading...</p>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card bg-success text-white p-3">
+            <div class="card bg-white text-black p-3">
                 <h4>Total Users</h4>
-                <p>450</p> <!-- Replace with dynamic count -->
+                <p id="total-users">Loading...</p> <!-- Dynamic count here -->
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card bg-warning text-white p-3">
+            <div class="card bg-black text-white p-3">
                 <h4>Most Popular Comic</h4>
                 <p>Spider-Man</p> <!-- Replace with dynamic data -->
             </div>
@@ -80,7 +80,7 @@ include("./includes/sidebar.php");
                     <input type="file" class="form-control" name="comic_cover" required>
                 </div>
                 <div class="col-md-3 mt-2">
-                    <button type="submit" class="btn btn-primary">Add Comic</button>
+                    <button type="submit" class="btn btn-warning">Add Comic</button>
                 </div>
             </div>
         </form>
@@ -111,6 +111,18 @@ include("./includes/sidebar.php");
 
     fetchTotalComics(); // Fetch on page load
     setInterval(fetchTotalComics, 5000); // Refresh every 5 seconds
+
+    function fetchTotalUsers() {
+        fetch("fetch_total_users.php")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("total-users").innerText = data;
+            })
+            .catch(error => console.error('Error fetching total users:', error));
+    }
+
+    fetchTotalUsers(); // Fetch on page load
+    setInterval(fetchTotalUsers, 5000); // Refresh every 5 seconds
 </script>
 
 <?php
