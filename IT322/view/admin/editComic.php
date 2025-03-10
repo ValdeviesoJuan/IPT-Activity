@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
 
                 <div class="d-flex justify-content-between">
-                    <a href="manage_comics.php" class="btn btn-outline-light">← Back to Comics</a>
+                    <a href="manageComics.php" class="btn btn-outline-light">← Back to Comics</a>
                     <button type="submit" class="btn btn-primary">Update Comic</button>
                 </div>
             </form>

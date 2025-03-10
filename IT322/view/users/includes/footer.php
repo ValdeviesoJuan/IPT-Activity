@@ -1,16 +1,16 @@
 </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
+  <footer id="footer" class="footer" style="background-color: #1a1a1c;">
+    <div class="copyright" style="color: #ffeb3b;">
       &copy; Copyright <strong><span>ComicZone</span></strong>. All Rights Reserved
     </div>
-    <div class="credits">
+    <div class="credits" style="color: #ffeb3b;">
       <!-- All the links in the footer should remain intact. -->
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">RatunilValdeviesoTeam</a>
+      Designed by <a href="https://bootstrapmade.com/" style="color: #FFD700;">RatunilValdeviesoTeam</a>
     </div>
   </footer><!-- End Footer -->
 

@@ -10,7 +10,7 @@ include("./includes/sidebar.php");
     <!-- Quick Stats -->
     <div class="row">
         <div class="col-md-4">
-            <div class="card bg-black text-white p-3">
+            <div class="card text-white p-3" style="background-color: #2c2c2c;">
                 <h4>Total Comics</h4>
                 <p id="total-comics">Loading...</p>
             </div>
@@ -22,7 +22,7 @@ include("./includes/sidebar.php");
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card bg-black text-white p-3">
+            <div class="card text-white p-3" style="background-color: #2c2c2c;">
                 <h4>Most Popular Comic</h4>
                 <p>Spider-Man</p> <!-- Replace with dynamic data -->
             </div>
