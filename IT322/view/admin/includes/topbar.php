@@ -1,5 +1,5 @@
   <!-- ======= Header ======= -->
-  <header id="header" class="header fixed-top d-flex align-items-center" style="background-color: black;">
+  <header id="header" class="header fixed-top d-flex align-items-center" style="background-color: #191a1c;">
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.php" class="logo d-flex align-items-center">
@@ -11,8 +11,8 @@
 
     <div class="search-bar">
       <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword" style="color: white; font-size: 16px; font-weight: bold; background-color: #2c2c2c;">
+        <button type="submit" title="Search"><i class="bi bi-search" style="color: white;"></i></button>
       </form>
     </div><!-- End Search Bar -->
 

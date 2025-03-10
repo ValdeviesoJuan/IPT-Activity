@@ -1,18 +1,18 @@
   <!-- ======= Header ======= -->
-  <header id="header" class="header fixed-top d-flex align-items-center">
+  <header id="header" class="header fixed-top d-flex align-items-center" style="background-color: #191a1c;">
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.php" class="logo d-flex align-items-center">
-        <img src="../../assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">ComicZone</span>
+        <img src="../../assets/img/Logo1.png" alt="ComicZone Logo" style="max-width: 100px; max-height: 80px;">
+        <span class="d-none d-lg-block" style="color: white; margin-left: -20px;">ComicZone</span>
       </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
+      <i class="bi bi-list toggle-sidebar-btn" style="color: white;"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
+    <div class="search-bar" >
       <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword" style="color: white; font-size: 16px; font-weight: bold; background-color: #2c2c2c;">
+        <button type="submit" title="Search"><i class="bi bi-search" style="color: white;"></i></button>
       </form>
     </div><!-- End Search Bar -->
 
@@ -28,7 +28,7 @@
         <li class="nav-item dropdown">
 
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell"></i>
+            <i class="bi bi-bell" style="color: white;"></i>
             <span class="badge bg-primary badge-number">4</span>
           </a><!-- End Notification Icon -->
 
@@ -102,7 +102,7 @@
 
         <li class="nav-item dropdown">
 
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" style="color: white;">
             <i class="bi bi-chat-left-text"></i>
             <span class="badge bg-success badge-number">3</span>
           </a><!-- End Messages Icon -->
@@ -118,10 +118,10 @@
 
             <li class="message-item">
               <a href="#">
-                <img src="../../assets/img/messages-1.jpg" alt="" class="rounded-circle">
+                <img src="../../assets/img/kentImage.jpg" alt="" class="rounded-circle">
                 <div>
-                  <h4>Maria Hudson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <h4>Kent "LiverLover" Vicente</h4>
+                  <p>Recommended a new and upcoming comic. Click Now!</p>
                   <p>4 hrs. ago</p>
                 </div>
               </a>
@@ -132,10 +132,10 @@
 
             <li class="message-item">
               <a href="#">
-                <img src="../../assets/img/messages-2.jpg" alt="" class="rounded-circle">
+                <img src="../../assets/img/geloImage.jpg" alt="" class="rounded-circle">
                 <div>
-                  <h4>Anna Nelson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <h4>Gelo "HaremBoii" Pagutayao</h4>
+                  <p>Recommended a new and upcoming comic. Click Now!</p>
                   <p>6 hrs. ago</p>
                 </div>
               </a>
@@ -146,10 +146,10 @@
 
             <li class="message-item">
               <a href="#">
-                <img src="../../assets/img/messages-3.jpg" alt="" class="rounded-circle">
+                <img src="../../assets/img/shuaImage.jpg" alt="" class="rounded-circle">
                 <div>
-                  <h4>David Muldon</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <h4>Joshua "Bakuhatsu" Amper</h4>
+                  <p>Recommended a new and upcoming comic. Click Now!</p>
                   <p>8 hrs. ago</p>
                 </div>
               </a>
@@ -169,14 +169,14 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="../../assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            <img src="../../assets/img/jcImage.jpg" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2" style="color: white;">JC. Valdevieso</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
-              <span>Web Designer</span>
+              <h6>Juan Carlos Valdevieso</h6>
+              <span>Otaku</span>
             </li>
             <li>
               <hr class="dropdown-divider">
