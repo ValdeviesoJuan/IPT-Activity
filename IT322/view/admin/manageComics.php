@@ -72,8 +72,8 @@ $result = mysqli_query($conn, $query);
                             style='width: 80px; height: 120px; object-fit: cover; border-radius: 5px; border: 2px solid white;'></td>";
                         echo "<td><a href='{$row['url']}' target='_blank' class='btn btn-primary btn-sm'>Read Here</a></td>";
                         echo "<td>
-                                <a href='edit_comic.php?id={$row['id']}' class='btn btn-warning btn-sm'>Edit</a>
-                                <a href='delete_comic.php?id={$row['id']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to delete this comic?\")'>Delete</a>
+                                <a href='editComic.php?id={$row['id']}' class='btn btn-warning btn-sm'>Edit</a>
+                                <a href='deleteComic.php?id={$row['id']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to delete this comic?\")'>Delete</a>
                               </td>";
                         echo "</tr>";
                     }
