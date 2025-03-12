@@ -5,42 +5,42 @@
 
     <li class="nav-item">
       <a class="nav-link collapsed" href="index.php" id="dashboard" style="background-color: #2c2c2c; color: #fff;">
-        <i class="ri-dashboard-fill icon-link" id="dashIcon"></i>
+        <i class="ri-dashboard-fill icon-link" id="dashIcon" style="color: #fff;"></i>
         <span>Dashboard</span>
       </a>
     </li><!-- End Dashboard Nav -->
 
     <li class="nav-item">
       <a class="nav-link collapsed" href="manageComics.php" id="manageComics" style="background-color: #2c2c2c; color: #fff;">
-        <i class="ri-book-3-fill icon-link" id="comicsIcon"></i>
+        <i class="ri-book-3-fill icon-link" id="comicsIcon" style="color: #fff;"></i>
         <span>Manage Comics</span>
       </a>
     </li><!-- End Blank Page Nav -->
 
     <li class="nav-item">
       <a class="nav-link collapsed" href="manageUsers.php" id="manageUsers" style="background-color: #2c2c2c; color: #fff;">
-        <i class="ri-group-fill icon-link" id="usersIcon"></i>
+        <i class="ri-group-fill icon-link" id="usersIcon" style="color: #fff;"></i>
         <span>Manage Users</span>
       </a>
     </li><!-- End Blank Page Nav -->
 
     <li class="nav-item">
       <a class="nav-link collapsed" href="reviewsReports.php" id="reviewsReports" style="background-color: #2c2c2c; color: #fff;">
-        <i class="ri-disqus-fill icon-link" id="reviewsIcon"></i>
+        <i class="ri-disqus-fill icon-link" id="reviewsIcon" style="color: #fff;"></i>
         <span>Reviews & Reports</span>
       </a>
     </li><!-- End Blank Page Nav -->
 
     <li class="nav-item">
       <a class="nav-link collapsed" href="announcements.php" id="announcements" style="background-color: #2c2c2c; color: #fff;">
-        <i class="ri-megaphone-fill icon-link" id="announcementsIcon"></i>
+        <i class="ri-megaphone-fill icon-link" id="announcementsIcon" style="color: #fff;"></i>
         <span>Announcements</span>
       </a>
     </li><!-- End Blank Page Nav -->
 
     <li class="nav-item">
       <a class="nav-link collapsed" href="settings.php" id="settings" style="background-color: #2c2c2c; color: #fff;">
-        <i class="ri-settings-3-fill icon-link" id="settingsIcon"></i>
+        <i class="ri-settings-3-fill icon-link" id="settingsIcon" style="color: #fff;"></i>
         <span>Settings</span>
       </a>
     </li><!-- End Blank Page Nav -->
@@ -49,14 +49,14 @@
 
     <li class="nav-item">
       <a class="nav-link collapsed" href="aboutUs.php" id="aboutUs" style="background-color: #2c2c2c; color: #fff;">
-        <i class="ri-team-fill icon-link" id="aboutUsIcon"></i>
+        <i class="ri-team-fill icon-link" id="aboutUsIcon" style="color: #fff;"></i>
         <span>About Us</span>
       </a>
     </li><!-- End Blank Page Nav -->
 
     <li class="nav-item">
       <a class="nav-link collapsed" href="contact.php" id="contact" style="background-color: #2c2c2c; color: #fff;">
-        <i class="ri-global-fill icon-link" id="contactIcon"></i>
+        <i class="ri-global-fill icon-link" id="contactIcon" style="color: #fff;"></i>
         <span>Contact</span>
       </a>
     </li><!-- End Blank Page Nav -->

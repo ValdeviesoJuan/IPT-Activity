@@ -54,7 +54,7 @@ include("./includes/sidebar.php");
                     echo "<td>{$row['title']}</td>";
                     echo "<td>{$row['author']}</td>";
                     echo "<td>{$row['genre']}</td>";
-                    echo "<td><img src='{$row['cover']}' alt='Comic Cover' class='comic-cover'></td>";
+                    echo "<td><img src='../../assets/{$row['cover']}' alt='Comic Cover' class='comic-cover'></td>";
                     echo "<td><a href='{$row['url']}' target='_blank' class='btn btn-primary btn-sm'>Click here</a></td>";
                     echo "</tr>";
                 }
