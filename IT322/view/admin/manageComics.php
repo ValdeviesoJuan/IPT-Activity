@@ -68,7 +68,7 @@ $result = mysqli_query($conn, $query);
                         echo "<td>{$row['title']}</td>";
                         echo "<td>{$row['author']}</td>";
                         echo "<td>{$row['genre']}</td>";
-                        echo "<td><img src='{$row['cover']}' alt='Comic Cover' 
+                        echo "<td><img src='../../assets/{$row['cover']}' alt='Comic Cover' 
                             style='width: 80px; height: 120px; object-fit: cover; border-radius: 5px; border: 2px solid white;'></td>";
                         echo "<td><a href='{$row['url']}' target='_blank' class='btn btn-primary btn-sm'>Read Here</a></td>";
                         echo "<td>

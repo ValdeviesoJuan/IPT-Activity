@@ -5,7 +5,7 @@ include("./includes/sidebar.php");
 ?>
 
 <div class="container mt-4">
-    <h2 class="text-black">About Us</h2>
+    <h2 class="text-white mb-3">About Us</h2>
 
     <!-- About Section -->
     <div class="card bg-dark text-white p-3">

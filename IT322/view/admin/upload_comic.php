@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $comic_url = mysqli_real_escape_string($conn, $_POST['comic_url']); // New URL input
 
     // Handle File Upload
-    $uploadDir = __DIR__ . "/uploads/"; 
+    $uploadDir = dirname(__DIR__, 2) . "/assets/uploads/"; 
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0777, true); // Create uploads folder if it doesn't exist
     }
