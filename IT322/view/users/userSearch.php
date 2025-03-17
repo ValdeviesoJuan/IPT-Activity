@@ -44,7 +44,7 @@ include("../users/includes/sidebar.php");
     <?php
     include("../../dB/config.php");
 
-    $query = "SELECT * FROM comics ORDER BY updated_at DESC LIMIT 10"; // Adjust as needed
+    $query = "SELECT * FROM comics ORDER BY updatedAt DESC LIMIT 10"; // Adjust as needed
     $result = mysqli_query($conn, $query);
 
     while ($row = mysqli_fetch_assoc($result)) {

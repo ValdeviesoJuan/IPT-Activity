@@ -5,7 +5,7 @@ include("./includes/sidebar.php");
 ?>
 
 <div class="container mt-4">
-    <h2 class="text-black">Manage Users</h2>
+    <h2 class="text-white">Manage Users</h2>
 
     <!-- Search & Filter Options -->
     <div class="mb-3">

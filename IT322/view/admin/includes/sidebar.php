@@ -65,8 +65,6 @@
 
 </aside><!-- End Sidebar-->
 
-<main id="main" class="main">
-
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     // Get the current page filename (e.g., "manageComics.html")
@@ -97,3 +95,5 @@ document.addEventListener("DOMContentLoaded", function () {
       font-weight: bold;
   }
 </style>
+
+<main id="main" class="main" style="background-color: #1a1a1c; color: white;"> 

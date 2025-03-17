@@ -5,7 +5,7 @@ include("./includes/sidebar.php");
 ?>
 
 <div class="container mt-4">
-    <h2 class="text-black">Contact Us</h2>
+    <h2 class="text-white">Contact Us</h2>
 
     <!-- Contact Information -->
     <div class="card bg-dark text-white p-3">

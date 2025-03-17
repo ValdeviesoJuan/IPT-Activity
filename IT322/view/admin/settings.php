@@ -5,7 +5,7 @@ include("./includes/sidebar.php");
 ?>
 
 <div class="container mt-4">
-    <h2 class="text-black">Settings</h2>
+    <h2 class="text-white">Settings</h2>
 
     <!-- Admin Profile Settings -->
     <div class="card bg-dark text-white p-3">

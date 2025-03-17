@@ -5,7 +5,7 @@ include("./includes/sidebar.php");
 ?>
 
 <div class="container mt-4">
-    <h2 class="text-black">Announcements</h2>
+    <h2 class="text-white">Announcements</h2>
 
     <!-- Add Announcement Form -->
     <div class="card bg-dark text-white p-3">
