@@ -128,6 +128,24 @@
                       </div>
                     </div>
 
+                    <fieldset class="row mb-3">
+                      <legend class="col-form-label col-sm-2 pt-0">Role</legend>
+                      <div class="col-sm-10">
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="role" id="admin" value="Admin">
+                          <label class="form-check-label" for="admin">
+                            Admin
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="role" id="user" value="User" checked>
+                          <label class="form-check-label" for="user">
+                            User
+                          </label>
+                        </div>
+                      </div>
+                    </fieldset>
+
                     <div class="col-12">
                       <div class="form-check">
                         <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
