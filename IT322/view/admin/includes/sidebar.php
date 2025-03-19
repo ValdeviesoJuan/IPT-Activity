@@ -45,7 +45,7 @@
       </a>
     </li><!-- End Blank Page Nav -->
 
-    <li class="nav-heading">ComicZone</li> 
+    <li class="nav-heading" style="color: rgb(255, 217, 0);">ComicZone</li> 
 
     <li class="nav-item">
       <a class="nav-link collapsed" href="aboutUs.php" id="aboutUs" style="background-color: #2c2c2c; color: #fff;">
@@ -64,8 +64,6 @@
   </ul>
 
 </aside><!-- End Sidebar-->
-
-<main id="main" class="main">
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -97,3 +95,5 @@ document.addEventListener("DOMContentLoaded", function () {
       font-weight: bold;
   }
 </style>
+
+<main id="main" class="main" style="background-color: #1a1a1c; color: white;"> 

@@ -29,9 +29,9 @@ if(isset($_POST["login"])) {
                 'emailAddress' => $emailAddress,
             ];
 
-            if($userRole == 'admin'){
+            if($userRole == 'Admin'){
                 header("Location: ../view/admin/index.php");
-            } else if ($userRole == "user"){
+            } else if ($userRole == "User"){
                 header("Location: ../view/users/index.php");
             } else {
                 $_SESSION['message'] = "User has no Role Myghad";

@@ -38,4 +38,4 @@
   ======================================================== -->
 </head>
 
-<body> <!--style="background-color: #1a1a1c;" Put this color -->
+<body style="background-color: #1a1a1c;"> <!-- Put this color -->

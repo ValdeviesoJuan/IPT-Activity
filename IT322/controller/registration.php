@@ -11,6 +11,7 @@ if(isset($_POST['registration'])) {
     $phoneNumber = $_POST['phoneNumber'];
     $gender = $_POST['gender'];
     $birthday = $_POST['birthday'];
+    $role = $_POST['role'];
 
     // CONFIRM PASSWORD VALIDATION
     if($password !== $cpassword) {
@@ -32,8 +33,8 @@ if(isset($_POST['registration'])) {
     }
 
     // REGISTRATION POST 
-    $query = "INSERT INTO `users`(`firstName`, `lastName`, `email`, `password`, `phoneNumber`, `gender`, `birthday`) 
-    VALUES ('$firstName','$lastName','$email','$password','$phoneNumber','$gender','$birthday')";
+    $query = "INSERT INTO `users`(`firstName`, `lastName`, `email`, `password`, `phoneNumber`, `gender`, `birthday`, `role`) 
+    VALUES ('$firstName','$lastName','$email','$password','$phoneNumber','$gender','$birthday', '$role')";
     
     $result = mysqli_query($conn, $query);
     if($result){

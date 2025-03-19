@@ -5,7 +5,7 @@ include("./includes/sidebar.php");
 ?>
 
 <div class="container mt-4">
-    <h2 class="text-black">Reviews & Reports</h2>
+    <h2 class="text-white">Reviews & Reports</h2>
 
     <!-- Search & Filter Options -->
     <div class="mb-3">

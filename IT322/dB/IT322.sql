@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `users` (
-  `userId` int(11) NOT NULL,
+  `userId` bigint(20) NOT NULL,
   `firstName` varchar(255) NOT NULL,
   `lastName` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
@@ -38,8 +38,10 @@ CREATE TABLE `users` (
   `birthday` date NOT NULL,
   `verification` int(11) NOT NULL DEFAULT 0,
   `profilePicture` longblob NOT NULL,
+  `role` varchar(10) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
 
 --
 -- Indexes for dumped tables

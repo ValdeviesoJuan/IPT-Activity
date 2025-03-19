@@ -8,36 +8,54 @@ include("../../dB/config.php"); // Connect to database
 $searchQuery = isset($_GET['search']) ? $_GET['search'] : "";
 $filterGenre = isset($_GET['genre']) ? $_GET['genre'] : "";
 
-// Build the query dynamically
-$query = "SELECT * FROM comics WHERE 1";
+// Base Query to Fetch Comics with Genres and Themes
+$query="SELECT c.comicId, c.title, au.authorName, ar.artistName, c.cover, c.url,
+                GROUP_CONCAT(DISTINCT g.genre ORDER BY g.genre ASC) AS genres,
+                GROUP_CONCAT(DISTINCT t.theme ORDER BY t.theme ASC) AS themes
+        FROM comics c
+        LEFT JOIN comicgenre cg ON c.comicId = cg.comicId
+        LEFT JOIN genres g ON cg.genreId = g.genreId
+        LEFT JOIN comictheme ct ON c.comicId = ct.comicId
+        LEFT JOIN themes t ON ct.themeId = t.themeId
+        LEFT JOIN comicauthor cau ON c.comicId = cau.comicId
+        LEFT JOIN authors au ON cau.authorId = au.authorId
+        LEFT JOIN comicartist car ON c.comicId = car.comicId
+        LEFT JOIN artists ar ON car.artistId = ar.artistId
+        WHERE 1";
 
+// Apply Search Filter
 if (!empty($searchQuery)) {
-    $query .= " AND (title LIKE '%$searchQuery%' OR author LIKE '%$searchQuery%')";
-}
-if (!empty($filterGenre)) {
-    $query .= " AND genre = '$filterGenre'";
+    $query .= " AND (c.title LIKE '%$searchQuery%' OR au.authorName LIKE '%$searchQuery%')";
 }
 
-$query .= " ORDER BY id DESC";
+// Apply Genre Filter
+if (!empty($filterGenre)) {
+    $query .= " AND g.genre = '$filterGenre'";
+}
+
+$query .= " GROUP BY c.comicId ORDER BY c.comicId DESC";
 $result = mysqli_query($conn, $query);
 ?>
 
 <div class="container mt-4">
-    <h2 class="text-black">Manage Comics</h2>
+    <h2 class="text-white">Manage Comics</h2>
 
     <!-- Search & Filters -->
     <div class="mb-3">
         <form method="GET" action="">
             <input type="text" class="form-control" name="search" placeholder="Search comics..."
-                value="<?php echo $searchQuery; ?>" style="max-width: 300px; display: inline-block;">
+                value="<?php echo htmlspecialchars($searchQuery); ?>" style="max-width: 300px; display: inline-block;">
 
             <select class="form-control" name="genre" style="max-width: 200px; display: inline-block;">
                 <option value="">Filter by Genre</option>
-                <option value="Action" <?php echo ($filterGenre == 'Action') ? 'selected' : ''; ?>>Action</option>
-                <option value="Fantasy" <?php echo ($filterGenre == 'Fantasy') ? 'selected' : ''; ?>>Fantasy</option>
-                <option value="Sci-Fi" <?php echo ($filterGenre == 'Sci-Fi') ? 'selected' : ''; ?>>Sci-Fi</option>
-                <option value="Horror" <?php echo ($filterGenre == 'Horror') ? 'selected' : ''; ?>>Horror</option>
-                <option value="Romance" <?php echo ($filterGenre == 'Romance') ? 'selected' : ''; ?>>Romance</option>
+                <?php
+                $genreQuery = "SELECT genre FROM genres ORDER BY genre ASC";
+                $genreResult = mysqli_query($conn, $genreQuery);
+                while ($genreRow = mysqli_fetch_assoc($genreResult)) {
+                    $selected = ($filterGenre == $genreRow['genre']) ? 'selected' : '';
+                    echo "<option value='{$genreRow['genre']}' $selected>{$genreRow['genre']}</option>";
+                }
+                ?>
             </select>
 
             <button type="submit" class="btn btn-primary">Search</button>
@@ -53,7 +71,9 @@ $result = mysqli_query($conn, $query);
                     <th><input type="checkbox"></th>
                     <th>Comic Title</th>
                     <th>Author</th>
+                    <th>Artist</th>
                     <th>Genre</th>
+                    <th>Theme</th>
                     <th>Cover</th>
                     <th>Read</th>
                     <th>Actions</th>
@@ -65,20 +85,22 @@ $result = mysqli_query($conn, $query);
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
                         echo "<td><input type='checkbox'></td>";
-                        echo "<td>{$row['title']}</td>";
-                        echo "<td>{$row['author']}</td>";
-                        echo "<td>{$row['genre']}</td>";
+                        echo "<td style='max-width: 200px;'>{$row['title']}</td>";
+                        echo "<td>{$row['authorName']}</td>";
+                        echo "<td>{$row['artistName']}</td>";
+                        echo "<td style='max-width: 150px;'>" . (!empty($row['genres']) ? $row['genres'] : 'N/A') . "</td>";
+                        echo "<td style='max-width: 100px;'>" . (!empty($row['themes']) ? $row['themes'] : 'N/A') . "</td>";
                         echo "<td><img src='../../assets/{$row['cover']}' alt='Comic Cover' 
                             style='width: 80px; height: 120px; object-fit: cover; border-radius: 5px; border: 2px solid white;'></td>";
                         echo "<td><a href='{$row['url']}' target='_blank' class='btn btn-primary btn-sm'>Read Here</a></td>";
                         echo "<td>
-                                <a href='editComic.php?id={$row['id']}' class='btn btn-warning btn-sm'>Edit</a>
-                                <a href='deleteComic.php?id={$row['id']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to delete this comic?\")'>Delete</a>
+                                <a href='editComic.php?id={$row['comicId']}' class='btn btn-warning btn-sm'>Edit</a>
+                                <a href='deleteComic.php?id={$row['comicId']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to delete this comic?\")'>Delete</a>
                               </td>";
                         echo "</tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='7' class='text-center'>No comics found</td></tr>";
+                    echo "<tr><td colspan='9' class='text-center'>No comics found</td></tr>";
                 }
                 ?>
             </tbody>

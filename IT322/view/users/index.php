@@ -12,16 +12,22 @@ include("../users/includes/sidebar.php");
             <?php
             include("../../dB/config.php");
 
-            $query = "SELECT * FROM comics ORDER BY created_at DESC LIMIT 10"; // Adjust limit as needed
+            $query = "SELECT * FROM comics ORDER BY createdAt DESC LIMIT 10"; // Adjust limit as needed
             $result = mysqli_query($conn, $query);
 
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<a href='{$row['url']}' target='_blank'>";
-                    echo "<div class='comic-item'>";
-                        echo "<img src='../../assets/{$row['cover']}' alt='Comic Cover' class='comic-cover'>";
-                        echo "<p>{$row["title"]}</p>";
-                    echo '</div>';
-                echo "</a>";
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<a href='{$row['url']}' target='_blank'>";
+                        echo "<div class='comic-item'>";
+                            echo "<img src='../../assets/{$row['cover']}' alt='Comic Cover' class='comic-cover'>";
+                            echo "<p>{$row["title"]}</p>";
+                        echo '</div>';
+                    echo "</a>";
+                }
+            } else {
+                echo "<div class='no-comics-found'>";
+                    echo "<p>No comics found</p>";
+                echo "</div>";
             }
             ?>
         </div>
@@ -32,7 +38,7 @@ include("../users/includes/sidebar.php");
         <?php
         include("../../dB/config.php");
 
-        $query = "SELECT * FROM comics ORDER BY updated_at ASC LIMIT 10";  
+        $query = "SELECT * FROM comics ORDER BY updatedAt ASC LIMIT 10";  
         $result = mysqli_query($conn, $query);
 
         $comics = [];
@@ -40,33 +46,53 @@ include("../users/includes/sidebar.php");
             $comics[] = $row;
         }
 
-        // Split comics into two columns (5 per column)
-        $chunks = array_chunk($comics, 6);
-        foreach ($chunks as $chunk) {
-            echo '<div class="update-column">';
-            foreach ($chunk as $comic) {
-                echo '<div class="comic-item">';
-                    echo "<a class='comic-link' href='{$comic['url']}' target='_blank'>";
-                        echo "<img src='../../assets/{$comic['cover']}' alt='Comic Cover' class='comic-cover'>";
-                    echo "</a>";
-                    echo "<div class='comic-info'>";
+        // Split comics into two columns (6 per column)
+        if (count($comics) > 0) {
+            $chunks = array_chunk($comics, 6);
+            foreach ($chunks as $chunk) {
+                echo '<div class="update-column">';
+                foreach ($chunk as $comic) {
+                    echo '<div class="comic-item">';
                         echo "<a class='comic-link' href='{$comic['url']}' target='_blank'>";
-                            echo "<p class='comic-title'>{$comic["title"]}</p>";
+                            echo "<img src='../../assets/{$comic['cover']}' alt='Comic Cover' class='comic-cover'>";
                         echo "</a>";
-                        echo "<div class='comic-meta'>";
-                            echo "<p><i class='ri-user-line icon-link' style='color: #fff; margin-right: 5px;'></i>{$comic["author"]}</p>";
-                            echo "<p class='update-time'>" . date("M d, Y H:i", strtotime($comic["updated_at"])) . "</p>";
+                        echo "<div class='comic-info'>";
+                            echo "<a class='comic-link' href='{$comic['url']}' target='_blank'>";
+                                echo "<p class='comic-title'>{$comic["title"]}</p>";
+                            echo "</a>";
+                            echo "<div class='comic-meta'>";
+                                echo "<p><i class='ri-user-line icon-link' style='color: #fff; margin-right: 5px;'></i>{$comic["author"]}</p>";
+                                echo "<p class='update-time'>" . date("M d, Y H:i", strtotime($comic["updated_at"])) . "</p>";
+                            echo "</div>";
                         echo "</div>";
-                    echo "</div>";
+                    echo '</div>';
+                }
                 echo '</div>';
             }
-            echo '</div>';
+        } else {
+            echo "<div class='no-comics-found'>";
+                echo "<p>No comics found</p>";
+            echo "</div>";
         }
         ?>
     </div>
 </div>
 
 <style>
+.no-comics-found {
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    text-align: center; 
+    width: 100%;
+    min-height: 100px;
+    border-radius: 5px;
+    background-color: #2C2C2C;
+    color: white; 
+    font-size: 18px;
+    font-weight: bold;
+}
+
 .recently-added-container {
     overflow-x: auto;
     white-space: nowrap; 
