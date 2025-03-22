@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 22, 2025 at 10:27 AM
+-- Generation Time: Mar 22, 2025 at 11:49 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -44,12 +44,23 @@ CREATE TABLE `alternatecomictitle` (
 
 CREATE TABLE `announcements` (
   `announcementId` bigint(20) NOT NULL,
-  `userId` bigint(20) NOT NULL,
+  `userId` bigint(20) DEFAULT NULL,
   `title` varchar(255) NOT NULL,
   `message` text NOT NULL,
   `datePosted` timestamp NOT NULL DEFAULT current_timestamp(),
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `announcements`
+--
+
+INSERT INTO `announcements` (`announcementId`, `userId`, `title`, `message`, `datePosted`, `updatedAt`) VALUES
+(1, NULL, 'New Arrival of ComicZone Website', 'Hello Guys welcome to my channel', '2025-03-22 10:07:04', '2025-03-22 10:07:04'),
+(2, NULL, 'Whata?', 'asidhahcac', '2025-03-22 10:08:01', '2025-03-22 10:08:01'),
+(3, NULL, 'Announce', 'Message', '2025-03-22 10:09:27', '2025-03-22 10:09:27'),
+(4, NULL, 'Title', 'Announcement Message', '2025-03-22 10:10:56', '2025-03-22 10:10:56'),
+(5, NULL, 'Test', 'asdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', '2025-03-22 10:30:12', '2025-03-22 10:30:12');
 
 -- --------------------------------------------------------
 
@@ -64,6 +75,13 @@ CREATE TABLE `artists` (
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `artists`
+--
+
+INSERT INTO `artists` (`artistId`, `artistName`, `createdAt`, `updatedAt`) VALUES
+(1, 'Juan Carlos', '2025-03-22 10:25:37', '2025-03-22 10:25:37');
+
 -- --------------------------------------------------------
 
 --
@@ -73,6 +91,28 @@ CREATE TABLE `artists` (
 CREATE TABLE `authors` (
   `authorId` bigint(20) NOT NULL,
   `authorName` varchar(255) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `authors`
+--
+
+INSERT INTO `authors` (`authorId`, `authorName`, `createdAt`, `updatedAt`) VALUES
+(1, 'Juan Carlos', '2025-03-22 10:25:37', '2025-03-22 10:25:37');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chapters`
+--
+
+CREATE TABLE `chapters` (
+  `chapterId` bigint(20) NOT NULL,
+  `comicId` bigint(20) NOT NULL,
+  `chapterNumber` double NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -89,6 +129,13 @@ CREATE TABLE `comicartist` (
   `comicId` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `comicartist`
+--
+
+INSERT INTO `comicartist` (`comicArtistId`, `artistId`, `comicId`) VALUES
+(1, 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -101,6 +148,13 @@ CREATE TABLE `comicauthor` (
   `comicId` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `comicauthor`
+--
+
+INSERT INTO `comicauthor` (`comicAuthorId`, `authorId`, `comicId`) VALUES
+(1, 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -112,6 +166,14 @@ CREATE TABLE `comicgenre` (
   `genreId` bigint(20) NOT NULL,
   `comicId` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `comicgenre`
+--
+
+INSERT INTO `comicgenre` (`comicGenreId`, `genreId`, `comicId`) VALUES
+(1, 4, 1),
+(2, 18, 1);
 
 -- --------------------------------------------------------
 
@@ -144,6 +206,13 @@ CREATE TABLE `comics` (
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `comics`
+--
+
+INSERT INTO `comics` (`comicId`, `title`, `synopsis`, `url`, `cover`, `publicationDate`, `publicationStatus`, `contentRating`, `createdAt`, `updatedAt`) VALUES
+(1, 'That Time I got Reincarnated as a Beauty', 'it was that Time I got reincarnated as a beauty at the city of Everdale', 'https://mangadex.org/', 'uploads/67de902123c74-Long Hair Evelyn.jpg', '2025-03-02', 'Ongoing', 'Safe', '2025-03-22 10:25:37', '2025-03-22 10:25:37');
+
 -- --------------------------------------------------------
 
 --
@@ -155,6 +224,14 @@ CREATE TABLE `comictheme` (
   `themeId` bigint(20) NOT NULL,
   `comicId` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `comictheme`
+--
+
+INSERT INTO `comictheme` (`comicThemeId`, `themeId`, `comicId`) VALUES
+(1, 25, 1),
+(2, 25, 1);
 
 -- --------------------------------------------------------
 
@@ -180,6 +257,37 @@ CREATE TABLE `genres` (
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `genres`
+--
+
+INSERT INTO `genres` (`genreId`, `genre`, `createdAt`) VALUES
+(1, 'Action', '2025-03-22 09:37:38'),
+(2, 'Adventure', '2025-03-22 09:37:38'),
+(3, 'Boys\' Love', '2025-03-22 09:37:38'),
+(4, 'Comedy', '2025-03-22 09:37:38'),
+(5, 'Crime', '2025-03-22 09:37:38'),
+(6, 'Drama', '2025-03-22 09:37:38'),
+(7, 'Fantasy', '2025-03-22 09:37:38'),
+(8, 'Girls\' Love', '2025-03-22 09:37:38'),
+(9, 'Historical', '2025-03-22 09:37:38'),
+(10, 'Horror', '2025-03-22 09:37:38'),
+(11, 'Isekai', '2025-03-22 09:37:38'),
+(12, 'Magical Girls', '2025-03-22 09:37:38'),
+(13, 'Mecha', '2025-03-22 09:37:38'),
+(14, 'Medical', '2025-03-22 09:37:38'),
+(15, 'Mystery', '2025-03-22 09:37:38'),
+(16, 'Philosophical', '2025-03-22 09:37:38'),
+(17, 'Psychological', '2025-03-22 09:37:38'),
+(18, 'Romance', '2025-03-22 09:37:38'),
+(19, 'Sci-Fi', '2025-03-22 09:37:38'),
+(20, 'Slice of Life', '2025-03-22 09:37:38'),
+(21, 'Sports', '2025-03-22 09:37:38'),
+(22, 'Superhero', '2025-03-22 09:37:38'),
+(23, 'Thriller', '2025-03-22 09:37:38'),
+(24, 'Tragedy', '2025-03-22 09:37:38'),
+(25, 'Wuxia', '2025-03-22 09:37:38');
+
 -- --------------------------------------------------------
 
 --
@@ -191,6 +299,49 @@ CREATE TABLE `themes` (
   `theme` varchar(255) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `themes`
+--
+
+INSERT INTO `themes` (`themeId`, `theme`, `createdAt`) VALUES
+(1, 'Aliens', '2025-03-22 09:37:38'),
+(2, 'Animals', '2025-03-22 09:37:38'),
+(3, 'Cooking', '2025-03-22 09:37:38'),
+(4, 'Crossdressing', '2025-03-22 09:37:38'),
+(5, 'Delinquents', '2025-03-22 09:37:38'),
+(6, 'Demons', '2025-03-22 09:37:38'),
+(7, 'Genderswap', '2025-03-22 09:37:38'),
+(8, 'Ghosts', '2025-03-22 09:37:38'),
+(9, 'Gyaru', '2025-03-22 09:37:38'),
+(10, 'Harem', '2025-03-22 09:37:38'),
+(11, 'Incest', '2025-03-22 09:37:38'),
+(12, 'Loli', '2025-03-22 09:37:38'),
+(13, 'Mafia', '2025-03-22 09:37:38'),
+(14, 'Magic', '2025-03-22 09:37:38'),
+(15, 'Martial Arts', '2025-03-22 09:37:38'),
+(16, 'Military', '2025-03-22 09:37:38'),
+(17, 'Monster Girls', '2025-03-22 09:37:38'),
+(18, 'Monsters', '2025-03-22 09:37:38'),
+(19, 'Music', '2025-03-22 09:37:38'),
+(20, 'Ninja', '2025-03-22 09:37:38'),
+(21, 'Office Workers', '2025-03-22 09:37:38'),
+(22, 'Police', '2025-03-22 09:37:38'),
+(23, 'Post-Apocalyptic', '2025-03-22 09:37:38'),
+(24, 'Reincarnation', '2025-03-22 09:37:38'),
+(25, 'Reverse Harem', '2025-03-22 09:37:38'),
+(26, 'Samurai', '2025-03-22 09:37:38'),
+(27, 'School Life', '2025-03-22 09:37:38'),
+(28, 'Shota', '2025-03-22 09:37:38'),
+(29, 'Supernatural', '2025-03-22 09:37:38'),
+(30, 'Survival', '2025-03-22 09:37:38'),
+(31, 'Time Travel', '2025-03-22 09:37:38'),
+(32, 'Traditional Games', '2025-03-22 09:37:38'),
+(33, 'Vampires', '2025-03-22 09:37:38'),
+(34, 'Video Games', '2025-03-22 09:37:38'),
+(35, 'Villainess', '2025-03-22 09:37:38'),
+(36, 'Virtual Reality', '2025-03-22 09:37:38'),
+(37, 'Zombies', '2025-03-22 09:37:38');
 
 -- --------------------------------------------------------
 
@@ -246,6 +397,14 @@ CREATE TABLE `users` (
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`userId`, `firstName`, `lastName`, `email`, `password`, `phoneNumber`, `gender`, `birthday`, `verification`, `profilePicture`, `role`, `createdAt`, `updatedAt`) VALUES
+(1, 'Juan Carlos', 'Valdevieso', 'valdeviesojuan2@gmail.com', 'password123', '7675445645', 'Male', '2025-03-24', 0, '', 'User', '2025-03-22 09:37:56', '2025-03-22 09:37:56'),
+(2, 'Josiah', 'Ratunil', 'ratunil.josiah30@gmail.com', 'password123', '678678', 'Male', '2025-03-02', 0, '', 'Admin', '2025-03-22 09:38:28', '2025-03-22 09:38:28');
+
 -- --------------------------------------------------------
 
 --
@@ -257,6 +416,32 @@ CREATE TABLE `views` (
   `comicId` bigint(20) NOT NULL,
   `userId` bigint(20) NOT NULL,
   `viewedAt` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `volumechapters`
+--
+
+CREATE TABLE `volumechapters` (
+  `chapterId` bigint(20) NOT NULL,
+  `volumeId` bigint(20) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `volumes`
+--
+
+CREATE TABLE `volumes` (
+  `volumeId` bigint(20) NOT NULL,
+  `volumeNumber` double NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -288,6 +473,13 @@ ALTER TABLE `artists`
 --
 ALTER TABLE `authors`
   ADD PRIMARY KEY (`authorId`);
+
+--
+-- Indexes for table `chapters`
+--
+ALTER TABLE `chapters`
+  ADD PRIMARY KEY (`chapterId`),
+  ADD KEY `comicId` (`comicId`);
 
 --
 -- Indexes for table `comicartist`
@@ -386,6 +578,19 @@ ALTER TABLE `views`
   ADD KEY `userId` (`userId`);
 
 --
+-- Indexes for table `volumechapters`
+--
+ALTER TABLE `volumechapters`
+  ADD KEY `chapterId` (`chapterId`),
+  ADD KEY `volumeId` (`volumeId`);
+
+--
+-- Indexes for table `volumes`
+--
+ALTER TABLE `volumes`
+  ADD PRIMARY KEY (`volumeId`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -399,37 +604,43 @@ ALTER TABLE `alternatecomictitle`
 -- AUTO_INCREMENT for table `announcements`
 --
 ALTER TABLE `announcements`
-  MODIFY `announcementId` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `announcementId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `artists`
 --
 ALTER TABLE `artists`
-  MODIFY `artistId` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `artistId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `authors`
 --
 ALTER TABLE `authors`
-  MODIFY `authorId` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `authorId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `chapters`
+--
+ALTER TABLE `chapters`
+  MODIFY `chapterId` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `comicartist`
 --
 ALTER TABLE `comicartist`
-  MODIFY `comicArtistId` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `comicArtistId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `comicauthor`
 --
 ALTER TABLE `comicauthor`
-  MODIFY `comicAuthorId` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `comicAuthorId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `comicgenre`
 --
 ALTER TABLE `comicgenre`
-  MODIFY `comicGenreId` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `comicGenreId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `comicrating`
@@ -441,13 +652,13 @@ ALTER TABLE `comicrating`
 -- AUTO_INCREMENT for table `comics`
 --
 ALTER TABLE `comics`
-  MODIFY `comicId` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `comicId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `comictheme`
 --
 ALTER TABLE `comictheme`
-  MODIFY `comicThemeId` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `comicThemeId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `follows`
@@ -459,13 +670,13 @@ ALTER TABLE `follows`
 -- AUTO_INCREMENT for table `genres`
 --
 ALTER TABLE `genres`
-  MODIFY `genreId` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `genreId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `themes`
 --
 ALTER TABLE `themes`
-  MODIFY `themeId` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `themeId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `usercomicreview`
@@ -483,13 +694,19 @@ ALTER TABLE `userreportcomicreview`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userId` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `userId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `views`
 --
 ALTER TABLE `views`
   MODIFY `viewId` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `volumes`
+--
+ALTER TABLE `volumes`
+  MODIFY `volumeId` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -506,6 +723,12 @@ ALTER TABLE `alternatecomictitle`
 --
 ALTER TABLE `announcements`
   ADD CONSTRAINT `announcements_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `chapters`
+--
+ALTER TABLE `chapters`
+  ADD CONSTRAINT `chapters_ibfk_1` FOREIGN KEY (`comicId`) REFERENCES `comics` (`comicId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `comicartist`
@@ -569,6 +792,13 @@ ALTER TABLE `userreportcomicreview`
 ALTER TABLE `views`
   ADD CONSTRAINT `views_ibfk_1` FOREIGN KEY (`comicId`) REFERENCES `comics` (`comicId`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `views_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `volumechapters`
+--
+ALTER TABLE `volumechapters`
+  ADD CONSTRAINT `volumechapters_ibfk_1` FOREIGN KEY (`chapterId`) REFERENCES `chapters` (`chapterId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `volumechapters_ibfk_2` FOREIGN KEY (`volumeId`) REFERENCES `volumes` (`volumeId`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
