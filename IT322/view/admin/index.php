@@ -187,7 +187,6 @@ include("./includes/sidebar.php");
         </form>
     </div>
 
-
 </div>
 
 <style>
