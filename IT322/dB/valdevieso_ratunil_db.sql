@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 17, 2025 at 10:23 AM
+-- Generation Time: Mar 22, 2025 at 10:27 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -80,10 +80,10 @@ CREATE TABLE `authors` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `comicartistid`
+-- Table structure for table `comicartist`
 --
 
-CREATE TABLE `comicartistid` (
+CREATE TABLE `comicartist` (
   `comicArtistId` bigint(20) NOT NULL,
   `artistId` bigint(20) NOT NULL,
   `comicId` bigint(20) NOT NULL
@@ -290,9 +290,9 @@ ALTER TABLE `authors`
   ADD PRIMARY KEY (`authorId`);
 
 --
--- Indexes for table `comicartistid`
+-- Indexes for table `comicartist`
 --
-ALTER TABLE `comicartistid`
+ALTER TABLE `comicartist`
   ADD PRIMARY KEY (`comicArtistId`),
   ADD KEY `artistId` (`artistId`),
   ADD KEY `comicId` (`comicId`);
@@ -414,9 +414,9 @@ ALTER TABLE `authors`
   MODIFY `authorId` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `comicartistid`
+-- AUTO_INCREMENT for table `comicartist`
 --
-ALTER TABLE `comicartistid`
+ALTER TABLE `comicartist`
   MODIFY `comicArtistId` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
@@ -508,11 +508,11 @@ ALTER TABLE `announcements`
   ADD CONSTRAINT `announcements_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `comicartistid`
+-- Constraints for table `comicartist`
 --
-ALTER TABLE `comicartistid`
-  ADD CONSTRAINT `comicartistid_ibfk_1` FOREIGN KEY (`artistId`) REFERENCES `artists` (`artistId`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `comicartistid_ibfk_2` FOREIGN KEY (`comicId`) REFERENCES `comics` (`comicId`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `comicartist`
+  ADD CONSTRAINT `comicartist_ibfk_1` FOREIGN KEY (`artistId`) REFERENCES `artists` (`artistId`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `comicartist_ibfk_2` FOREIGN KEY (`comicId`) REFERENCES `comics` (`comicId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `comicauthor`
