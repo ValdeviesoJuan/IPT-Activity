@@ -38,4 +38,8 @@
   ======================================================== -->
 </head>
 
+<?php
+  session_start();
+?>
+
 <body style="background-color: #1a1a1c;">

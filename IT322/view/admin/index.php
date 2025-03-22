@@ -66,19 +66,19 @@ include("./includes/sidebar.php");
             $result = mysqli_query($conn, $query);
             ?>
             <tbody>
-            <?php
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>";
-                echo "<td>{$row['title']}</td>";
-                echo "<td>{$row['authorName']}</td>";
-                echo "<td>{$row['artistName']}</td>";
-                echo "<td>" . (!empty($row['genres']) ? $row['genres'] : 'N/A') . "</td>";
-                echo "<td>" . (!empty($row['themes']) ? $row['themes'] : 'N/A') . "</td>";
-                echo "<td><img src='../../assets/{$row['cover']}' alt='Comic Cover' class='comic-cover'></td>";
-                echo "<td><a href='{$row['url']}' target='_blank' class='btn btn-primary btn-sm'>Click here</a></td>";
-                echo "</tr>";
-            }
-            ?>
+                <?php
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<tr>";
+                    echo "<td>{$row['title']}</td>";
+                    echo "<td>{$row['authorName']}</td>";
+                    echo "<td>{$row['artistName']}</td>";
+                    echo "<td>" . (!empty($row['genres']) ? $row['genres'] : 'N/A') . "</td>";
+                    echo "<td>" . (!empty($row['themes']) ? $row['themes'] : 'N/A') . "</td>";
+                    echo "<td><img src='../../assets/{$row['cover']}' alt='Comic Cover' class='comic-cover'></td>";
+                    echo "<td><a href='{$row['url']}' target='_blank' class='btn btn-primary btn-sm'>Click here</a></td>";
+                    echo "</tr>";
+                }
+                ?>
             </tbody>
         </table>
     </div>

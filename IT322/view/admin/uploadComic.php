@@ -1,5 +1,6 @@
 <?php
-include("../../dB/config.php"); // Ensure database connection
+include("../../dB/config.php");
+session_start();
 
 // Check if form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -121,12 +122,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['message'] = "Comic Added Successfully";
             $_SESSION['code'] = "success";
             header("Location: index.php?success=1"); // Redirect to dashboard
+            mysqli_close($conn);
             exit();
         } else {
             echo "Database Error: " . mysqli_error($conn);
+            mysqli_close($conn);
         }
     } else {
         echo "Error uploading file.";
+        mysqli_close($conn);
     }
 }
 ?>

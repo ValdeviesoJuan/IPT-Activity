@@ -38,7 +38,22 @@ include("../users/includes/sidebar.php");
         <?php
         include("../../dB/config.php");
 
-        $query = "SELECT * FROM comics ORDER BY updatedAt ASC LIMIT 10";  
+        $query = "SELECT c.comicId, c.title, au.authorName, ar.artistName, c.cover, c.url, c.updatedAt,
+                            GROUP_CONCAT(DISTINCT g.genre ORDER BY g.genre ASC) AS genres,
+                            GROUP_CONCAT(DISTINCT t.theme ORDER BY t.theme ASC) AS themes
+                    FROM comics c
+                    LEFT JOIN comicgenre cg ON c.comicId = cg.comicId
+                    LEFT JOIN genres g ON cg.genreId = g.genreId
+                    LEFT JOIN comictheme ct ON c.comicId = ct.comicId
+                    LEFT JOIN themes t ON ct.themeId = t.themeId
+                    LEFT JOIN comicauthor cau ON c.comicId = cau.comicId
+                    LEFT JOIN authors au ON cau.authorId = au.authorId
+                    LEFT JOIN comicartist car ON c.comicId = car.comicId
+                    LEFT JOIN artists ar ON car.artistId = ar.artistId
+                    GROUP BY c.comicId
+                    ORDER BY c.comicId DESC
+                    LIMIT 5";
+
         $result = mysqli_query($conn, $query);
 
         $comics = [];
@@ -61,8 +76,8 @@ include("../users/includes/sidebar.php");
                                 echo "<p class='comic-title'>{$comic["title"]}</p>";
                             echo "</a>";
                             echo "<div class='comic-meta'>";
-                                echo "<p><i class='ri-user-line icon-link' style='color: #fff; margin-right: 5px;'></i>{$comic["author"]}</p>";
-                                echo "<p class='update-time'>" . date("M d, Y H:i", strtotime($comic["updated_at"])) . "</p>";
+                                echo "<p><i class='ri-user-line icon-link' style='color: #fff; margin-right: 5px;'></i>{$comic["authorName"]}</p>";
+                                echo "<p class='update-time'>" . date("M d, Y H:i", strtotime($comic["updatedAt"])) . "</p>";
                             echo "</div>";
                         echo "</div>";
                     echo '</div>';
@@ -167,7 +182,7 @@ include("../users/includes/sidebar.php");
 }
 
 .update-column .comic-item .comic-link .comic-title { 
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     color: white;
 }
