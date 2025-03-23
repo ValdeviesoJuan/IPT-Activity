@@ -9,8 +9,8 @@ include("./includes/sidebar.php");
 
     <!-- Add Announcement Form -->
     <div class="card bg-dark text-white p-3">
-        <h4>Add New Announcement</h4>
-        <form action="#" method="POST">
+        <h4>Add Announcement</h4>
+        <form action="./addAnnouncement.php" method="POST">
             <div class="mb-3">
                 <input type="text" class="form-control" name="title" placeholder="Title" required>
             </div>
@@ -31,32 +31,38 @@ include("./includes/sidebar.php");
                     <th>Title</th>
                     <th>Message</th>
                     <th>Date Posted</th>
+                    <th>Time Posted</th>
                     <th>Actions</th>
                 </tr>
             </thead>
+            <?php
+            include("../../dB/config.php");
+
+            $query = "SELECT announcementId, title, message, 
+            DATE(datePosted) AS postDate, 
+            TIME(datePosted) AS postTime  
+            FROM announcements 
+            GROUP BY announcementId ASC 
+            LIMIT 5;";
+
+            $result = mysqli_query($conn, $query);
+            ?>
             <tbody>
-                <!-- Sample Data (Replace with Database Query) -->
-                <tr>
-                    <td>1</td>
-                    <td>New Comics Arriving!</td>
-                    <td>Exciting new comics will be added next week. Stay tuned!</td>
-                    <td>March 8, 2025</td>
-                    <td>
-                        <button class="btn btn-warning btn-sm">Edit</button>
-                        <button class="btn btn-danger btn-sm">Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Maintenance Update</td>
-                    <td>The website will undergo maintenance on March 10.</td>
-                    <td>March 5, 2025</td>
-                    <td>
-                        <button class="btn btn-warning btn-sm">Edit</button>
-                        <button class="btn btn-danger btn-sm">Delete</button>
-                    </td>
-                </tr>
-                <!-- More rows dynamically loaded from database -->
+                <?php
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<tr>";
+                        echo "<td>{$row['announcementId']}</td>";
+                        echo "<td style='max-width: 160px;'>{$row['title']}</td>";
+                        echo "<td style='max-width: 500px;'>{$row['message']}</td>";
+                        echo "<td style='width: 120px;'>{$row['postDate']}</td>";
+                        echo "<td style='width: 120px;'>{$row['postTime']}</td>";
+                        echo "<td>";
+                            echo "<button class='btn btn-warning btn-sm mx-1'>Edit</button>";
+                            echo "<button class='btn btn-danger btn-sm'>Delete</button>";
+                        echo "</td>";
+                    echo "</tr>";
+                }
+                ?>
             </tbody>
         </table>
     </div>
