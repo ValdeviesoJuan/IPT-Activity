@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (move_uploaded_file($_FILES["comicCover"]["tmp_name"], $uploadFile)) {
         // Save data into database including the new URL field
-        $coverPath = "uploads/" . $fileName;
+        $coverPath = "../../assets/uploads/" . $fileName;
         $sql = "INSERT INTO comics (title, synopsis, cover, url, publicationDate, publicationStatus, contentRating) 
         VALUES ('$title', '$synopsis', '$coverPath', '$comicUrl', '$publicationDate', '$publicationStatus', '$contentRating')";
 
