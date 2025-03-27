@@ -19,7 +19,7 @@ include("../users/includes/sidebar.php");
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<a href='{$row['url']}' target='_blank'>";
                         echo "<div class='comic-item'>";
-                            echo "<img src='../../assets/uploads/{$row['cover']}' alt='Comic Cover' class='comic-cover'>";
+                            echo "<img src='../../assets/{$row['cover']}' alt='Comic Cover' class='comic-cover'>";
                             echo "<p>{$row["title"]}</p>";
                         echo '</div>';
                     echo "</a>";
@@ -69,7 +69,7 @@ include("../users/includes/sidebar.php");
                 foreach ($chunk as $comic) {
                     echo '<div class="comic-item">';
                         echo "<a class='comic-link' href='{$comic['url']}' target='_blank'>";
-                            echo "<img src='../../assets/uploads/{$comic['cover']}' alt='Comic Cover' class='comic-cover'>";
+                            echo "<img src='../../assets/{$comic['cover']}' alt='Comic Cover' class='comic-cover'>";
                         echo "</a>";
                         echo "<div class='comic-info'>";
                             echo "<a class='comic-link' href='{$comic['url']}' target='_blank'>";

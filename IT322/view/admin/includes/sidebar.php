@@ -25,13 +25,6 @@
     </li><!-- End Blank Page Nav -->
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="reviewsReports.php" id="reviewsReports" style="background-color: #2c2c2c; color: #fff;">
-        <i class="ri-disqus-fill icon-link" id="reviewsIcon" style="color: #fff;"></i>
-        <span>Reviews & Reports</span>
-      </a>
-    </li><!-- End Blank Page Nav -->
-
-    <li class="nav-item">
       <a class="nav-link collapsed" href="announcements.php" id="announcements" style="background-color: #2c2c2c; color: #fff;">
         <i class="ri-megaphone-fill icon-link" id="announcementsIcon" style="color: #fff;"></i>
         <span>Announcements</span>
