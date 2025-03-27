@@ -97,7 +97,7 @@ include("./includes/sidebar.php");
 
     function deleteUser(userId) {
         if (confirm("Are you sure you want to delete this user?")) {
-            fetch("delete_user.php?id=" + userId, { method: "GET" })
+            fetch("deleteUser.php?id=" + userId, { method: "GET" })
                 .then(response => response.text())
                 .then(data => {
                     alert(data); // Show success/error message

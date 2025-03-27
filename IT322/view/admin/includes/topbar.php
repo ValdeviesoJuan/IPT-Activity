@@ -1,5 +1,6 @@
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center" style="background-color: #191a1c;">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.php" class="logo d-flex align-items-center">
@@ -44,8 +45,8 @@
             <li class="notification-item">
               <i class="bi bi-exclamation-circle text-warning"></i>
               <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
+                <h4>New Comic Release!</h4>
+                <p>"The Dark Crusader" Issue #10 is out now!</p>
                 <p>30 min. ago</p>
               </div>
             </li>
@@ -57,8 +58,8 @@
             <li class="notification-item">
               <i class="bi bi-x-circle text-danger"></i>
               <div>
-                <h4>Atque rerum nesciunt</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
+                <h4>Limited Edition Alert!</h4>
+                <p>Only 5 copies left of "Galactic Warriors" signed edition!</p>
                 <p>1 hr. ago</p>
               </div>
             </li>
@@ -70,8 +71,8 @@
             <li class="notification-item">
               <i class="bi bi-check-circle text-success"></i>
               <div>
-                <h4>Sit rerum fuga</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
+                <h4>Order Shipped!</h4>
+                <p>Your order #45678 has been dispatched.</p>
                 <p>2 hrs. ago</p>
               </div>
             </li>
@@ -83,8 +84,8 @@
             <li class="notification-item">
               <i class="bi bi-info-circle text-primary"></i>
               <div>
-                <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
+                <h4>Comic Con Update</h4>
+                <p>Meet the creators of "Neo City Chronicles" this Saturday!</p>
                 <p>4 hrs. ago</p>
               </div>
             </li>
@@ -176,7 +177,7 @@
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
               <h6>Juan Carlos Valdevieso</h6>
-              <span>Otaku</span>
+              <span>Comic Enthusiast</span>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -213,7 +214,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="http://localhost/IPT-Activity/IT322/index.html">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>

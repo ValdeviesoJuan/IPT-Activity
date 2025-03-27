@@ -112,7 +112,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     $response .= "
     <div class='manga-card'>
         <a href='{$row['url']}' target='_blank'>
-            <img src='../../assets/{$row['cover']}' alt='Comic Cover' class='manga-cover'>
+            <img src='../../assets/uploads/{$row['cover']}' alt='Comic Cover' class='manga-cover'>
         </a>
         <div class='manga-details'>
             <h3>{$row['title']}</h3>
