@@ -42,13 +42,17 @@ if(isset($_POST['registration'])) {
         $_SESSION['message'] = "Registered Successfully";
         $_SESSION['code'] = "success";
         header("Location: ../login.php");
+        
+        mysqli_close($conn);
         exit(0);    
     } else {
         $_SESSION['message'] = "Registration Failed: ";
         $_SESSION['code'] = "error";
         header("Location: ../registration.php");
+        
+        mysqli_close($conn);
+        exit(0);
     }
 
-    mysqli_close($conn);
 }
 ?>
