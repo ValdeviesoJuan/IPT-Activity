@@ -23,7 +23,7 @@ include("../users/includes/sidebar.php");
         <div class="filter-dropdown" id="filterSortBy">
             <h3>Sort By</h3>
             <select id="sortBy">
-                <option value="">None</option>
+                <option value="">Any</option>
                 <option value="Latest Upload">Latest Upload</option>
                 <option value="Oldest Upload">Oldest Upload</option>
                 <option value="Title Ascending">Title Ascending</option>
@@ -126,7 +126,7 @@ include("../users/includes/sidebar.php");
     <?php
     include("../../dB/config.php");
 
-    $query = "SELECT c.comicId, c.title, au.authorName, ar.artistName, c.synopsis, c.cover, c.url, c.publicationDate, 
+    $query = "SELECT c.comicId, c.title, au.authorName, ar.artistName, c.synopsis, c.cover, c.url, c.publicationDate,
                      c.publicationStatus, c.contentRating,
                     GROUP_CONCAT(DISTINCT g.genre ORDER BY g.genre ASC) AS genres,
                     GROUP_CONCAT(DISTINCT t.theme ORDER BY t.theme ASC) AS themes
@@ -169,11 +169,13 @@ include("../users/includes/sidebar.php");
     
     <div class="manga-card">
         <a href="<?= $row['url'] ?>" target="_blank">
-            <img src="../../assets/uploads/<?= $row['cover'] ?>" alt="Comic Cover" class="manga-cover">
+            <img src="../../assets/<?= $row['cover'] ?>" alt="Comic Cover" class="manga-cover">
         </a>
         <div class="manga-details">
-            <h3><?= $row["title"] ?></h3>
-            
+            <a href="<?= $row['url'] ?>" target="_blank">
+                <h3><?= $row["title"] ?></h3>
+            </a>
+
             <!-- Publication Status -->
             <div class="status-box">
                 <span class="status-circle" style="background-color: <?= $status_color ?>;"></span>
@@ -453,6 +455,7 @@ include("../users/includes/sidebar.php");
         border-radius: 5px;
         padding: 15px;
         align-items: flex-start;
+        height: 100%;
     }
 
     .manga-cover {

@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contentRating = mysqli_real_escape_string($conn, $_POST['contentRating']);
     $publicationStatus = mysqli_real_escape_string($conn, $_POST['publicationStatus']);
     $publicationDate = mysqli_real_escape_string($conn, $_POST['publicationDate']);
-    $comicUrl = mysqli_real_escape_string($conn, $_POST['comicUrl']); // New URL input
+    $comicUrl = mysqli_real_escape_string($conn, $_POST['comicUrl']); 
 
     // Check if author exists, if not insert
     $author_query = "SELECT authorId FROM authors WHERE authorName = '$author'";
@@ -44,18 +44,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (move_uploaded_file($_FILES["comicCover"]["tmp_name"], $uploadFile)) {
         // Save data into database including the new URL field
-        $coverPath = "../../assets/uploads/" . $fileName;
+        $coverPath = "uploads/" . $fileName;
         $sql = "INSERT INTO comics (title, synopsis, cover, url, publicationDate, publicationStatus, contentRating) 
         VALUES ('$title', '$synopsis', '$coverPath', '$comicUrl', '$publicationDate', '$publicationStatus', '$contentRating')";
 
         if (mysqli_query($conn, $sql)) {
             $comicId = mysqli_insert_id($conn);
 
-            // Add Author in the Bridge Table
             if (!empty($_POST['author'])) {
                 $query = "INSERT INTO comicauthor (authorId, comicId) VALUES ('$author_id', '$comicId')";
                 if (mysqli_query($conn, $query)) {
-                    echo "Comic added successfully!";
+                    echo "Author added successfully!";
                 } else {
                     echo "Error: " . mysqli_error($conn); 
                     $_SESSION['message'] = "Insert Failed: Author Error";
@@ -64,11 +63,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
 
-            // Add Artist in the Bridge Table
             if (!empty($_POST['author'])) {
                 $query = "INSERT INTO comicartist (artistId, comicId) VALUES ('$artist_id', '$comicId')";
                 if (mysqli_query($conn, $query)) {
-                    echo "Comic added successfully!";
+                    echo "Artist added successfully!";
                 } else {
                     echo "Error: " . mysqli_error($conn); 
                     $_SESSION['message'] = "Insert Failed: Artist Error";

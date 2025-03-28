@@ -74,7 +74,7 @@ include("./includes/sidebar.php");
                     echo "<td>{$row['artistName']}</td>";
                     echo "<td>" . (!empty($row['genres']) ? $row['genres'] : 'N/A') . "</td>";
                     echo "<td>" . (!empty($row['themes']) ? $row['themes'] : 'N/A') . "</td>";
-                    echo "<td><img src='../../assets/uploads/{$row['cover']}' alt='Comic Cover' class='comic-cover'></td>";
+                    echo "<td><img src='../../assets/{$row['cover']}' alt='Comic Cover' class='comic-cover'></td>";
                     echo "<td><a href='{$row['url']}' target='_blank' class='btn btn-primary btn-sm'>Click here</a></td>";
                     echo "</tr>";
                 }
@@ -225,7 +225,7 @@ include("./includes/sidebar.php");
         position: absolute;
         background-color: #2c2c2c;
         color: #fff;
-        width: 100%;
+        width: 260px;
         border: 1px solid #FFD700;
         z-index: 1000;
         max-height: 200px;
@@ -327,7 +327,7 @@ include("./includes/sidebar.php");
     }
 
     function searchArtist(query) {
-        if (query.length < 2) return; // Avoid unnecessary queries
+        if (query.length < 2) return;
         fetch(`searchArtist.php?q=${query}`)
             .then(response => response.json())
             .then(data => {

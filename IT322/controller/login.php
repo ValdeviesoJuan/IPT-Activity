@@ -1,9 +1,8 @@
 <?php
-session_start();
 include("../dB/config.php");
+session_start();
 
 if(isset($_POST["login"])) {
-
     $email = $_POST["email"];
     $password = $_POST["password"];
 
@@ -12,6 +11,7 @@ if(isset($_POST["login"])) {
 
     $query_run = mysqli_query($conn, $query);
 
+    
     if($query_run) {
         if(mysqli_num_rows($query_run) > 0) {
             $data = mysqli_fetch_assoc($query_run);
@@ -30,27 +30,34 @@ if(isset($_POST["login"])) {
             ];
 
             if($userRole == 'Admin'){
+                $_SESSION['message'] = "Welcome Admin " . $fullname;
+                $_SESSION["code"] = "success";
                 header("Location: ../view/admin/index.php");
             } else if ($userRole == "User"){
+                $_SESSION['message'] = "Welcome User " . $fullname;
+                $_SESSION["code"] = "success";
                 header("Location: ../view/users/index.php");
             } else {
                 $_SESSION['message'] = "User has no Role Myghad";
                 $_SESSION["code"] = "error";
                 header("Location: ../login.php");
+                exit(0);
             }
+
+            mysqli_close($conn); 
             exit();
         } else {
-            $_SESSION['status'] = "YOUR WRONG";
-            $_SESSION["code"] = "error";
+            $_SESSION['message'] = "Wrong Email or Password";
+            $_SESSION['code'] = "error";
             header("Location: ../login.php");
-            exit();
+            exit(0);
         }
 
     } else {
-        $_SESSION['status'] = "Invalid Credentials";
+        $_SESSION['message'] = "There was an error processing your query";
         $_SESSION["code"] = "error";
         header("Location: ../login.php");
-        exit();
+        exit(0);
     } 
     
 }

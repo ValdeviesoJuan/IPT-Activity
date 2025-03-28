@@ -5,84 +5,25 @@ include("../users/includes/sidebar.php");
 ?>
 
 <!-- Recently Added Comics Section -->
-<div class="card text-white p-3" style="background-color: #1a1a1c; color: white;">
-    <h2 class="mb-4">Recently Added</h2>
-    <div class="recently-added-container">
-        <div class="recently-added">
-            <?php
-            include("../../dB/config.php");
-
-            $query = "SELECT * FROM comics ORDER BY createdAt DESC LIMIT 10"; // Adjust limit as needed
-            $result = mysqli_query($conn, $query);
-
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<a href='{$row['url']}' target='_blank'>";
-                        echo "<div class='comic-item'>";
-                            echo "<img src='../../assets/uploads/{$row['cover']}' alt='Comic Cover' class='comic-cover'>";
-                            echo "<p>{$row["title"]}</p>";
-                        echo '</div>';
-                    echo "</a>";
-                }
-            } else {
-                echo "<div class='no-comics-found'>";
-                    echo "<p>No comics found</p>";
-                echo "</div>";
-            }
-            ?>
-        </div>
-    </div>
-
-    <h2 class="mt-5 mb-2">Latest Updates</h2>
-    <div class="latest-updates-container">
+<h2 class="mb-4" style="
+    font-weight: bold;
+    margin: 20px 0;">Recently Added</h2>
+<div class="recently-added-container">
+    <div class="recently-added">
         <?php
         include("../../dB/config.php");
 
-        $query = "SELECT c.comicId, c.title, au.authorName, ar.artistName, c.cover, c.url, c.updatedAt,
-                            GROUP_CONCAT(DISTINCT g.genre ORDER BY g.genre ASC) AS genres,
-                            GROUP_CONCAT(DISTINCT t.theme ORDER BY t.theme ASC) AS themes
-                    FROM comics c
-                    LEFT JOIN comicgenre cg ON c.comicId = cg.comicId
-                    LEFT JOIN genres g ON cg.genreId = g.genreId
-                    LEFT JOIN comictheme ct ON c.comicId = ct.comicId
-                    LEFT JOIN themes t ON ct.themeId = t.themeId
-                    LEFT JOIN comicauthor cau ON c.comicId = cau.comicId
-                    LEFT JOIN authors au ON cau.authorId = au.authorId
-                    LEFT JOIN comicartist car ON c.comicId = car.comicId
-                    LEFT JOIN artists ar ON car.artistId = ar.artistId
-                    GROUP BY c.comicId
-                    ORDER BY c.comicId DESC
-                    LIMIT 5";
-
+        $query = "SELECT * FROM comics ORDER BY createdAt DESC LIMIT 10"; // Adjust limit as needed
         $result = mysqli_query($conn, $query);
 
-        $comics = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $comics[] = $row;
-        }
-
-        // Split comics into two columns (6 per column)
-        if (count($comics) > 0) {
-            $chunks = array_chunk($comics, 6);
-            foreach ($chunks as $chunk) {
-                echo '<div class="update-column">';
-                foreach ($chunk as $comic) {
-                    echo '<div class="comic-item">';
-                        echo "<a class='comic-link' href='{$comic['url']}' target='_blank'>";
-                            echo "<img src='../../assets/uploads/{$comic['cover']}' alt='Comic Cover' class='comic-cover'>";
-                        echo "</a>";
-                        echo "<div class='comic-info'>";
-                            echo "<a class='comic-link' href='{$comic['url']}' target='_blank'>";
-                                echo "<p class='comic-title'>{$comic["title"]}</p>";
-                            echo "</a>";
-                            echo "<div class='comic-meta'>";
-                                echo "<p><i class='ri-user-line icon-link' style='color: #fff; margin-right: 5px;'></i>{$comic["authorName"]}</p>";
-                                echo "<p class='update-time'>" . date("M d, Y H:i", strtotime($comic["updatedAt"])) . "</p>";
-                            echo "</div>";
-                        echo "</div>";
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "<a href='{$row['url']}' target='_blank'>";
+                    echo "<div class='comic-item'>";
+                        echo "<img src='../../assets/{$row['cover']}' alt='Comic Cover' class='comic-cover'>";
+                        echo "<p>{$row["title"]}</p>";
                     echo '</div>';
-                }
-                echo '</div>';
+                echo "</a>";
             }
         } else {
             echo "<div class='no-comics-found'>";
@@ -91,6 +32,65 @@ include("../users/includes/sidebar.php");
         }
         ?>
     </div>
+</div>
+
+<h2 class="mt-5 mb-2">Latest Updates</h2>
+<div class="latest-updates-container">
+    <?php
+    include("../../dB/config.php");
+
+    $query = "SELECT c.comicId, c.title, au.authorName, ar.artistName, c.cover, c.url, c.updatedAt,
+                        GROUP_CONCAT(DISTINCT g.genre ORDER BY g.genre ASC) AS genres,
+                        GROUP_CONCAT(DISTINCT t.theme ORDER BY t.theme ASC) AS themes
+                FROM comics c
+                LEFT JOIN comicgenre cg ON c.comicId = cg.comicId
+                LEFT JOIN genres g ON cg.genreId = g.genreId
+                LEFT JOIN comictheme ct ON c.comicId = ct.comicId
+                LEFT JOIN themes t ON ct.themeId = t.themeId
+                LEFT JOIN comicauthor cau ON c.comicId = cau.comicId
+                LEFT JOIN authors au ON cau.authorId = au.authorId
+                LEFT JOIN comicartist car ON c.comicId = car.comicId
+                LEFT JOIN artists ar ON car.artistId = ar.artistId
+                GROUP BY c.comicId
+                ORDER BY c.comicId DESC
+                LIMIT 5";
+
+    $result = mysqli_query($conn, $query);
+
+    $comics = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $comics[] = $row;
+    }
+
+    // Split comics into two columns (6 per column)
+    if (count($comics) > 0) {
+        $chunks = array_chunk($comics, 6);
+        foreach ($chunks as $chunk) {
+            echo '<div class="update-column">';
+            foreach ($chunk as $comic) {
+                echo '<div class="comic-item">';
+                    echo "<a class='comic-link' href='{$comic['url']}' target='_blank'>";
+                        echo "<img src='../../assets/{$comic['cover']}' alt='Comic Cover' class='comic-cover'>";
+                    echo "</a>";
+                    echo "<div class='comic-info'>";
+                        echo "<a class='comic-link' href='{$comic['url']}' target='_blank'>";
+                            echo "<p class='comic-title'>{$comic["title"]}</p>";
+                        echo "</a>";
+                        echo "<div class='comic-meta'>";
+                            echo "<p><i class='ri-user-line icon-link' style='color: #fff; margin-right: 5px;'></i>{$comic["authorName"]}</p>";
+                            echo "<p class='update-time'>" . date("M d, Y H:i", strtotime($comic["updatedAt"])) . "</p>";
+                        echo "</div>";
+                    echo "</div>";
+                echo '</div>';
+            }
+            echo '</div>';
+        }
+    } else {
+        echo "<div class='no-comics-found'>";
+            echo "<p>No comics found</p>";
+        echo "</div>";
+    }
+    ?>
 </div>
 
 <style>
