@@ -40,6 +40,14 @@
 
 <?php
   session_start();
+  if (!isset($_SESSION["auth"]) || $_SESSION["auth"] !== true) {
+      $_SESSION["message"] = "Please login to access the page.";
+      $_SESSION["code"] = "error";
+      header("Location: ../../login.php");
+      exit();
+  }
+  $fullName = $_SESSION["authUser"]["fullName"];
+  $role = $_SESSION["role"];
 ?>
 
-<body style="background-color: #1a1a1c;"> <!-- Put this color -->
+<body style="background-color: #1a1a1c;">

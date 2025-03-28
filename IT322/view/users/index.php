@@ -5,9 +5,7 @@ include("../users/includes/sidebar.php");
 ?>
 
 <!-- Recently Added Comics Section -->
-<h2 class="mb-4" style="
-    font-weight: bold;
-    margin: 20px 0;">Recently Added</h2>
+<h2 class="mb-4" style="font-weight: bold; margin: 20px 0;">Recently Added</h2>
 <div class="recently-added-container">
     <div class="recently-added">
         <?php
