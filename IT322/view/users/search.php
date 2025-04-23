@@ -12,7 +12,6 @@ $publicationStatus = $_POST['publicationStatus'] ?? '';
 $author = $_POST['author'] ?? '';
 $artist = $_POST['artist'] ?? '';
 
-// Build SQL query with filters
 $query = "SELECT c.comicId, c.title, au.authorName, ar.artistName, c.synopsis, c.cover, c.url, 
                  c.publicationDate, c.publicationStatus, c.contentRating,
                  GROUP_CONCAT(DISTINCT g.genre ORDER BY g.genre ASC) AS genres,
@@ -28,7 +27,6 @@ $query = "SELECT c.comicId, c.title, au.authorName, ar.artistName, c.synopsis, c
           LEFT JOIN artists ar ON car.artistId = ar.artistId
           WHERE 1";
 
-// Apply filters dynamically
 if (!empty($search)) {
     $query .= " AND c.title LIKE '%$search%'";
 }
