@@ -19,19 +19,15 @@ include("../users/includes/sidebar.php");
 
             <div class="tabs">
                 <button class="tab active">Info</button>
-                <button class="tab">Uploads</button>
                 <button class="tab"><a href="./userLibrary.php" style="color: #fff;">Library</a></button>
             </div>
 
             <div class="user-details">
                 <p class="user-label">User ID</p>
-                <p class="user-value">10c6e416-c012-4b71-8423-07b1450f0db9</p>
+                <p class="user-value"><?php echo $_SESSION["authUser"]["userId"] ?></p>
 
                 <p class="user-label">Roles</p>
-                <span class="user-role">User</span>
-
-                <p class="user-label">Uploads</p>
-                <p class="user-value">0</p>
+                <span class="user-role"><?php echo $_SESSION["role"] ?> </span>
             </div>
         </div>
     </div>
