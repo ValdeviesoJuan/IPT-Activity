@@ -7,12 +7,13 @@ include("../users/includes/sidebar.php");
 <h2 class="library-title">Library</h2>
 
 <div class="library-status-container">
-    <button class="status-btn active">Reading</button>
-    <button class="status-btn">Plan to Read</button>
-    <button class="status-btn">Completed</button>
-    <button class="status-btn">On Hold</button>
-    <button class="status-btn">Re-reading</button>
-    <button class="status-btn">Dropped</button>
+    <button class="status-btn active" data-status="All">All</button>
+    <button class="status-btn" data-status="Reading">Reading</button>
+    <button class="status-btn" data-status="Plan to Read">Plan to Read</button>
+    <button class="status-btn" data-status="Completed">Completed</button>
+    <button class="status-btn" data-status="On Hold">On Hold</button>
+    <button class="status-btn" data-status="Re-reading">Re-reading</button>
+    <button class="status-btn" data-status="Dropped">Dropped</button>
 </div>
 
 <?php
@@ -29,32 +30,40 @@ $totalComics = $rowCount['total'];
 </p> 
 
 <div class="manga-results">
-    <?php
-    include("../../dB/config.php");
+<?php
+include("../../dB/config.php");
 
-    $query = "SELECT c.comicId, c.title, au.authorName, ar.artistName, c.synopsis, c.cover, c.url, c.publicationDate, 
-                     c.publicationStatus, c.contentRating,
-                    GROUP_CONCAT(DISTINCT g.genre ORDER BY g.genre ASC) AS genres,
-                    GROUP_CONCAT(DISTINCT t.theme ORDER BY t.theme ASC) AS themes
-            FROM comics c
-            LEFT JOIN comicgenre cg ON c.comicId = cg.comicId
-            LEFT JOIN genres g ON cg.genreId = g.genreId
-            LEFT JOIN comictheme ct ON c.comicId = ct.comicId
-            LEFT JOIN themes t ON ct.themeId = t.themeId
-            LEFT JOIN comicauthor cau ON c.comicId = cau.comicId
-            LEFT JOIN authors au ON cau.authorId = au.authorId
-            LEFT JOIN comicartist car ON c.comicId = car.comicId
-            LEFT JOIN artists ar ON car.artistId = ar.artistId
-            GROUP BY c.comicId
-            ORDER BY c.comicId DESC
-            LIMIT 5;";
+$userId = $_SESSION['authUser']['userId']; // Adjust this if you use another session key
 
-    $result = mysqli_query($conn, $query);
-    $count = 0;
+$query = "SELECT c.comicId, c.title, au.authorName, ar.artistName, c.synopsis, c.cover, c.url, c.publicationDate, 
+                 c.publicationStatus, c.contentRating, ul.readStatus,
+                GROUP_CONCAT(DISTINCT g.genre ORDER BY g.genre ASC) AS genres,
+                GROUP_CONCAT(DISTINCT t.theme ORDER BY t.theme ASC) AS themes
+        FROM userLibrary ul
+        JOIN comics c ON ul.comicId = c.comicId
+        LEFT JOIN comicgenre cg ON c.comicId = cg.comicId
+        LEFT JOIN genres g ON cg.genreId = g.genreId
+        LEFT JOIN comictheme ct ON c.comicId = ct.comicId
+        LEFT JOIN themes t ON ct.themeId = t.themeId
+        LEFT JOIN comicauthor cau ON c.comicId = cau.comicId
+        LEFT JOIN authors au ON cau.authorId = au.authorId
+        LEFT JOIN comicartist car ON c.comicId = car.comicId
+        LEFT JOIN artists ar ON car.artistId = ar.artistId
+        WHERE ul.userId = ?
+        GROUP BY c.comicId
+        ORDER BY c.comicId DESC";
 
+$stmt = mysqli_prepare($conn, $query);
+mysqli_stmt_bind_param($stmt, 'i', $userId);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+
+$count = 0;
+
+if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
         if ($count % 2 == 0) echo "<div class='manga-row'>";
-        // Determine Publication Status Color
+
         $status_color = match ($row['publicationStatus']) {
             'Ongoing' => '#04d000',
             'Hiatus' => 'red',
@@ -62,66 +71,58 @@ $totalComics = $rowCount['total'];
             default => 'gray'
         };
 
-        // Determine Content Rating Color
         $rating_color = match ($row['contentRating']) {
             'Safe' => '#f8f9fa', 
             'Suggestive' => 'orange',
             'Erotica' => 'red',
             default => '#ccc'
         };
-        
-        $genres = explode(",", $row['genres']);
-    ?>
-    
-    <div class="manga-card">
-        <a href="<?= $row['url'] ?>" target="_blank">
-            <img src="../../assets/<?= $row['cover'] ?>" alt="Comic Cover" class="manga-cover">
-        </a>
-        <div class="manga-details">
-            <h3><?= $row["title"] ?></h3>
-            
-            <!-- Publication Status -->
-            <div class="status-box">
-                <span class="status-circle" style="background-color: <?= $status_color ?>;"></span>
-                <span class="status-text"><?= $row['publicationStatus'] ?></span>
-            </div>
-            
-            <!-- Content Rating, Genres, and Themes -->
-            <div class="info-row">
-                <span class="rating-box" style="background-color: <?= $rating_color ?>;">
-                    <?= $row['contentRating'] ?>
-                </span>
+?>
 
-                <?php  
-                if (!empty($row['genres'])) {
-                    $genresArray = explode(',', $row['genres']);
-                    foreach ($genresArray as $genre) {
-                        echo "<span class='genre'>$genre</span>";
-                    }
-                }
- 
-                if (!empty($row['themes'])) {
-                    $themesArray = explode(',', $row['themes']);
-                    foreach ($themesArray as $theme) {
-                        echo "<span class='theme'>$theme</span>";
-                    }
-                }
-                ?>
-            </div>
-            
-            <!-- Synopsis -->
-            <p class="synopsis"><?= $row['synopsis'] ?></p>
+<div class="manga-card" data-read-status="<?= strtolower(htmlspecialchars($row['readStatus'])) ?>">
+    <a href="<?= $row['url'] ?>" target="_blank">
+        <img src="../../assets/<?= $row['cover'] ?>" alt="Comic Cover" class="manga-cover">
+    </a>
+    <div class="manga-details">
+        <h3><?= $row["title"] ?></h3>
+        <div class="status-box">
+            <span class="status-circle" style="background-color: <?= $status_color ?>;"></span>
+            <span class="status-text"><?= $row['publicationStatus'] ?></span>
         </div>
-    </div>
+        <div class="info-row">
+            <span class="rating-box" style="background-color: <?= $rating_color ?>;">
+                <?= $row['contentRating'] ?>
+            </span>
+            <?php
+            if (!empty($row['genres'])) {
+                foreach (explode(',', $row['genres']) as $genre) {
+                    echo "<span class='genre'>$genre</span>";
+                }
+            }
 
-    <?php 
-        if ($count % 2 == 1) echo "</div>"; // Close row after two items
+            if (!empty($row['themes'])) {
+                foreach (explode(',', $row['themes']) as $theme) {
+                    echo "<span class='theme'>$theme</span>";
+                }
+            }
+            ?>
+        </div>
+        <p class="synopsis"><?= $row['synopsis'] ?></p>
+    </div>
+</div>
+
+<?php
+        if ($count % 2 == 1) echo "</div>";
         $count++;
     }
 
-    if ($count % 2 == 1) echo "</div>"; // Close any unclosed row
-    ?>
+    if ($count % 2 == 1) echo "</div>";
+} else {
+    echo "<div style='text-align: center; color: #fff; font-size: 24px; margin-top: 50px;'>No comics added to Library</div>";
+}
+?>
 </div>
+
 
 <style>
     .library-title {
@@ -277,14 +278,30 @@ $totalComics = $rowCount['total'];
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const buttons = document.querySelectorAll(".status-btn");
+        const cards = document.querySelectorAll(".manga-card");
+
+        function filterCards(status) {
+            const selected = status.toLowerCase();
+            cards.forEach(card => {
+                const cardStatus = (card.getAttribute("data-read-status") || "").toLowerCase();
+                if (selected === "all" || cardStatus === selected) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        // Initial filter to show only "reading"
+        filterCards("all");
 
         buttons.forEach(button => {
             button.addEventListener("click", function () {
-                // Remove 'active' class from all buttons
                 buttons.forEach(btn => btn.classList.remove("active"));
-
-                // Add 'active' class to clicked button
                 this.classList.add("active");
+
+                const selectedStatus = this.getAttribute("data-status") || "";
+                filterCards(selectedStatus);
             });
         });
     });
