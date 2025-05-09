@@ -379,15 +379,17 @@ include("../users/includes/sidebar.php");
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert("Comic added to library!");
+                $_SESSION["message"] = "Comic added to library";
+                $_SESSION["code"] = "success";
             } else {
-                alert("Failed to add: " + data.message);
+                $_SESSION["message"] = data.message;
+                $_SESSION["code"] = "error";
             }
             closeModal();
         })
         .catch(error => {
             console.error("Error:", error);
-            alert("Something went wrong!");
+            alert("Something went wrong!", error);
             closeModal();
         });
     }
