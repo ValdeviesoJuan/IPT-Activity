@@ -26,6 +26,9 @@ include("../users/includes/sidebar.php");
                 <p class="user-label">User ID</p>
                 <p class="user-value"><?php echo $_SESSION["authUser"]["userId"] ?></p>
 
+                <p class="user-label">User Email</p>
+                <p class="user-value"><?php echo $_SESSION["authUser"]["emailAddress"] ?></p>
+
                 <p class="user-label">Roles</p>
                 <span class="user-role"><?php echo $_SESSION["role"] ?> </span>
             </div>
@@ -126,14 +129,14 @@ include("../users/includes/sidebar.php");
     }
 
     .user-label {
-        font-size: 14px;
+        font-size: 16px;
+        font-weight: bold;
         color: #ccc;
         margin-bottom: 3px;
     }
 
     .user-value {
         font-size: 16px;
-        font-weight: bold;
         color: white;
         margin-bottom: 12px;
     }
