@@ -85,11 +85,11 @@ $result = mysqli_query($conn, $query);
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
                         echo "<td><input type='checkbox'></td>";
-                        echo "<td style='max-width: 200px;'>{$row['title']}</td>";
+                        echo "<td class='title-cell'>{$row['title']}</td>";
                         echo "<td>{$row['authorName']}</td>";
                         echo "<td>{$row['artistName']}</td>";
-                        echo "<td style='max-width: 150px;'>" . (!empty($row['genres']) ? $row['genres'] : 'N/A') . "</td>";
-                        echo "<td style='max-width: 100px;'>" . (!empty($row['themes']) ? $row['themes'] : 'N/A') . "</td>";
+                        echo "<td class='genre-cell'>" . (!empty($row['genres']) ? str_replace(',', ', ', $row['genres']) : 'N/A') . "</td>";
+                        echo "<td class='theme-cell'>" . (!empty($row['themes']) ? str_replace(',', ', ', $row['themes']) : 'N/A') . "</td>";
                         echo "<td><img src='../../assets/{$row['cover']}' alt='Comic Cover' 
                             style='width: 80px; height: 120px; object-fit: cover; border-radius: 5px; border: 2px solid white;'></td>";
                         echo "<td><a href='{$row['url']}' target='_blank' class='btn btn-primary btn-sm'>Read Here</a></td>";
@@ -107,5 +107,34 @@ $result = mysqli_query($conn, $query);
         </table>
     </div>
 </div>
+
+<style>
+    .title-cell {
+        white-space: normal !important;
+        word-break: normal;
+        overflow-wrap: break-word;
+        max-width: 150px;
+        padding: 5px;
+        hyphens: auto;
+    }
+
+    .genre-cell {
+        white-space: normal !important;
+        word-break: normal;
+        overflow-wrap: break-word;
+        max-width: 150px; 
+        padding: 5px;
+        hyphens: auto;
+    }
+
+    .theme-cell {
+        white-space: normal !important;
+        word-break: normal;
+        overflow-wrap: break-word;
+        max-width: 150px; 
+        padding: 5px;
+        hyphens: auto;
+    }
+</style>
 
 <?php include("./includes/footer.php"); ?>

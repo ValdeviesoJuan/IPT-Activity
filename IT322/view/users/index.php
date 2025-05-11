@@ -5,9 +5,7 @@ include("../users/includes/sidebar.php");
 ?>
 
 <!-- Recently Added Comics Section -->
-<h2 class="mb-4" style="
-    font-weight: bold;
-    margin: 20px 0;">Recently Added</h2>
+<h2 class="mb-4" style="font-weight: bold; margin: 20px 0;">Recently Added</h2>
 <div class="recently-added-container">
     <div class="recently-added">
         <?php
@@ -18,12 +16,17 @@ include("../users/includes/sidebar.php");
 
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-                echo "<a href='{$row['url']}' target='_blank'>";
-                    echo "<div class='comic-item'>";
+                $titleEscaped = htmlspecialchars($row['title'], ENT_QUOTES);
+                $coverEscaped = htmlspecialchars($row['cover'], ENT_QUOTES);
+                echo "<div class='comic-item'>";
+                    echo "<a href='{$row['url']}' target='_blank'>";
                         echo "<img src='../../assets/{$row['cover']}' alt='Comic Cover' class='comic-cover'>";
-                        echo "<p>{$row["title"]}</p>";
-                    echo '</div>';
-                echo "</a>";
+                    echo "</a>";
+                    echo "<a href='{$row['url']}' target='_blank'>{$row["title"]}</a>";
+                    echo "<button class='add-library-btn' onclick='openModal({$row['comicId']}, \"{$titleEscaped}\", \"{$coverEscaped}\")'>";
+                        echo "</i> <i class='ri-bookmark-line'></i>Add to Library";
+                    echo "</button>";
+                echo '</div>';
             }
         } else {
             echo "<div class='no-comics-found'>";
@@ -93,6 +96,34 @@ include("../users/includes/sidebar.php");
     ?>
 </div>
 
+<!-- Modal -->
+<div id="libraryModal" class="library-modal">
+  <div class="modal-content">
+    <h5>Add to Library</h5>
+    <div class="library-comic-info">
+        <img id="modalComicCover" src="" class="library-comic-cover" alt="Comic Cover">
+        <div class="library-comic-text">
+            <div class="library-comic-title">
+                <h1 id="modalComicTitle">Comic Title</h1>
+            </div>
+            <label class="status-label" for="readingStatus">Reading Status</label>
+            <select id="readingStatus" class="status-dropdown">
+                <option value="Reading">Reading</option>
+                <option value="On Hold">On Hold</option>
+                <option value="Dropped">Dropped</option>
+                <option value="Plan to Read">Plan to Read</option>
+                <option value="Completed">Completed</option>
+                <option value="Re-reading">Re-reading</option>
+            </select>
+        </div>
+    </div>
+    <div class="library-comic-buttons">
+        <button onclick="closeModal()" class="cancel-btn">Cancel</button>
+        <button onclick="addToLibrary()" class="add-btn">Add</button>
+    </div>
+  </div>
+</div>
+
 <style>
 .no-comics-found {
     display: flex; 
@@ -123,20 +154,27 @@ include("../users/includes/sidebar.php");
 .recently-added .comic-item {
     display: flex;
     flex-direction: column; 
-    min-width: 150px; /* Adjust based on cover size */ 
+    min-width: 150px; 
     margin-right: 25px;
     cursor: pointer;
-    color: #fff;
+    color: #fff; 
 }
 
-.recently-added .comic-item p {
+.recently-added .comic-item a {
     margin-top: 5px;
     font-size: 18px;
+    color: #fff;
     font-weight: bold;
     word-wrap: break-word; 
     white-space: normal;  
-    max-width: 150px; 
+    max-width: 120px; 
     overflow-wrap: break-word; 
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.recently-added .comic-item a:hover {
+    text-decoration: underline ;
 }
 
 .recently-added .comic-item .comic-cover {
@@ -204,7 +242,166 @@ include("../users/includes/sidebar.php");
     color: #aaa;
     margin-left: auto;
 }
+
+.recently-added .comic-item .add-library-btn {
+    margin-top: 5px;
+    width: 150px;
+    background-color: #444;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.recently-added .comic-item .add-library-btn:hover {
+    background-color: #666;
+}
+
+.library-modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+    background-color: #2c2c2c;
+    margin: 10% auto;
+    padding: 20px;
+    width: 600px;
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.library-modal .modal-content h5 {
+    display: flex;
+    justify-content: baseline;
+    margin-bottom: 25px;
+}
+
+.library-comic-info {
+    display: flex;
+    flex-direction: row;
+}
+
+.library-comic-cover {
+    width: 200px;
+    height: 300px;
+    object-fit: cover; 
+    border-radius: 5px;   
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
+
+.library-comic-title h1{
+    text-align: start;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.status-label {
+    display: flex;
+    justify-content: baseline;
+    font-weight: bold;
+}
+
+.status-dropdown {
+    display: flex;
+    justify-content: baseline;
+    width: 250px;
+    padding: 8px;
+    margin: 15px 0;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+}
+
+.library-comic-buttons {
+    display: flex;
+    justify-content:end;
+}
+
+.cancel-btn, .add-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 150px;
+}
+
+.library-comic-buttons {
+    gap: 15px;
+}
+
+.cancel-btn {
+    background-color: #555;
+    color: white;
+}
+
+.add-btn {
+    background-color: #FFEB3B;
+    color: white;
+}
 </style>
+
+<script>
+    let selectedComicId = null;
+
+    function openModal(comicId, title, cover) {
+        selectedComicId = comicId;
+        document.getElementById("modalComicTitle").innerText = title;
+        document.getElementById("modalComicCover").src = "../../assets/" + cover;
+        document.getElementById("libraryModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("libraryModal").style.display = "none";
+    }
+
+    function addToLibrary() {
+        const status = document.getElementById("readingStatus").value;
+
+        fetch('../../controller/addToLibrary.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                comicId: selectedComicId,
+                readStatus: status
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                $_SESSION["message"] = "Comic added to library";
+                $_SESSION["code"] = "success";
+            } else {
+                $_SESSION["message"] = data.message;
+                $_SESSION["code"] = "error";
+            }
+            closeModal();
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Something went wrong!", error);
+            closeModal();
+        });
+    }
+
+    // Optional: Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById("libraryModal");
+        if (event.target == modal) {
+        closeModal();
+        }
+    }
+</script>
 
 <?php
 include("../users/includes/footer.php");

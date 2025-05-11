@@ -12,7 +12,6 @@ $publicationStatus = $_POST['publicationStatus'] ?? '';
 $author = $_POST['author'] ?? '';
 $artist = $_POST['artist'] ?? '';
 
-// Build SQL query with filters
 $query = "SELECT c.comicId, c.title, au.authorName, ar.artistName, c.synopsis, c.cover, c.url, 
                  c.publicationDate, c.publicationStatus, c.contentRating,
                  GROUP_CONCAT(DISTINCT g.genre ORDER BY g.genre ASC) AS genres,
@@ -28,7 +27,6 @@ $query = "SELECT c.comicId, c.title, au.authorName, ar.artistName, c.synopsis, c
           LEFT JOIN artists ar ON car.artistId = ar.artistId
           WHERE 1";
 
-// Apply filters dynamically
 if (!empty($search)) {
     $query .= " AND c.title LIKE '%$search%'";
 }
@@ -48,19 +46,16 @@ if (!empty($artist)) {
     $query .= " AND ar.artistName LIKE '%$artist%'";
 }
 
-// Handle genres
 if (!empty($genres)) {
     $genrePlaceholders = "'" . implode("','", $genres) . "'";
     $query .= " AND g.genre IN ($genrePlaceholders)";
 }
 
-// Handle themes
 if (!empty($themes)) {
     $themePlaceholders = "'" . implode("','", $themes) . "'";
     $query .= " AND t.theme IN ($themePlaceholders)";
 }
 
-// Sorting
 $sortOptions = [
     "Latest Upload" => "ORDER BY c.publicationDate DESC",
     "Oldest Upload" => "ORDER BY c.publicationDate ASC",

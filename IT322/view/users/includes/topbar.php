@@ -170,14 +170,14 @@
       <li class="nav-item dropdown pe-3">
 
         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-          <img src="../../assets/img/jcImage.jpg" alt="Profile" class="rounded-circle">
-          <span class="d-none d-md-block dropdown-toggle ps-2" style="color: white;">JC. Valdevieso</span>
+          <img src="../../assets/img/profileImage.png" alt="Profile" class="rounded-circle">
+          <span class="d-none d-md-block dropdown-toggle ps-2" style="color: white;"><?php echo htmlspecialchars($fullName); ?></span>
         </a><!-- End Profile Iamge Icon -->
 
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
           <li class="dropdown-header">
-            <h6>Juan Carlos Valdevieso</h6>
-            <span>Comic Enthusiast</span>
+            <h6><?php echo htmlspecialchars($fullName); ?></h6>
+            <span><?php echo htmlspecialchars($role); ?></span>
           </li>
           <li>
             <hr class="dropdown-divider">
@@ -214,7 +214,7 @@
           </li>
 
           <li>
-            <a class="dropdown-item d-flex align-items-center" href="http://localhost/IPT-Activity/IT322/index.html">
+            <a class="dropdown-item d-flex align-items-center" href="../../controller/logout.php">
               <i class="bi bi-box-arrow-right"></i>
               <span>Sign Out</span>
             </a>

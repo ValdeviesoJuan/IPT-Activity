@@ -7,19 +7,27 @@ include("../users/includes/sidebar.php");
 <h2 class="library-title">Library</h2>
 
 <div class="library-status-container">
-    <button class="status-btn active">Reading</button>
-    <button class="status-btn">Plan to Read</button>
-    <button class="status-btn">Completed</button>
-    <button class="status-btn">On Hold</button>
-    <button class="status-btn">Re-reading</button>
-    <button class="status-btn">Dropped</button>
+    <button class="status-btn active" data-status="All">All</button>
+    <button class="status-btn" data-status="Reading">Reading</button>
+    <button class="status-btn" data-status="Plan to Read">Plan to Read</button>
+    <button class="status-btn" data-status="Completed">Completed</button>
+    <button class="status-btn" data-status="On Hold">On Hold</button>
+    <button class="status-btn" data-status="Re-reading">Re-reading</button>
+    <button class="status-btn" data-status="Dropped">Dropped</button>
 </div>
 
 <?php
 include("../../dB/config.php");
 
-$queryCount = "SELECT COUNT(*) as total FROM comics";
-$resultCount = mysqli_query($conn, $queryCount);
+$userId = $_SESSION['authUser']['userId'];
+$queryCount = "SELECT COUNT(DISTINCT ul.comicId) as total 
+               FROM userLibrary ul 
+               WHERE ul.userId = ?";
+$stmt = mysqli_prepare($conn, $queryCount);
+mysqli_stmt_bind_param($stmt, 'i', $userId);
+mysqli_stmt_execute($stmt);
+
+$resultCount = mysqli_stmt_get_result($stmt);
 $rowCount = mysqli_fetch_assoc($resultCount);
 $totalComics = $rowCount['total'];
 ?>
@@ -29,14 +37,20 @@ $totalComics = $rowCount['total'];
 </p> 
 
 <div class="manga-results">
+    <div id="no-results-message" class="no-results-message">
+        No comics added here
+    </div>
     <?php
     include("../../dB/config.php");
 
+    $userId = $_SESSION['authUser']['userId'];
+
     $query = "SELECT c.comicId, c.title, au.authorName, ar.artistName, c.synopsis, c.cover, c.url, c.publicationDate, 
-                     c.publicationStatus, c.contentRating,
+                    c.publicationStatus, c.contentRating, ul.readStatus,
                     GROUP_CONCAT(DISTINCT g.genre ORDER BY g.genre ASC) AS genres,
                     GROUP_CONCAT(DISTINCT t.theme ORDER BY t.theme ASC) AS themes
-            FROM comics c
+            FROM userLibrary ul
+            JOIN comics c ON ul.comicId = c.comicId
             LEFT JOIN comicgenre cg ON c.comicId = cg.comicId
             LEFT JOIN genres g ON cg.genreId = g.genreId
             LEFT JOIN comictheme ct ON c.comicId = ct.comicId
@@ -45,83 +59,80 @@ $totalComics = $rowCount['total'];
             LEFT JOIN authors au ON cau.authorId = au.authorId
             LEFT JOIN comicartist car ON c.comicId = car.comicId
             LEFT JOIN artists ar ON car.artistId = ar.artistId
+            WHERE ul.userId = ?
             GROUP BY c.comicId
-            ORDER BY c.comicId DESC
-            LIMIT 5;";
+            ORDER BY c.comicId DESC";
 
-    $result = mysqli_query($conn, $query);
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $userId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
     $count = 0;
 
-    while ($row = mysqli_fetch_assoc($result)) {
-        if ($count % 2 == 0) echo "<div class='manga-row'>";
-        // Determine Publication Status Color
-        $status_color = match ($row['publicationStatus']) {
-            'Ongoing' => '#04d000',
-            'Hiatus' => 'red',
-            'Completed' => '#00c9f5',
-            default => 'gray'
-        };
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            if ($count % 2 == 0) echo "<div class='manga-row'>";
 
-        // Determine Content Rating Color
-        $rating_color = match ($row['contentRating']) {
-            'Safe' => '#f8f9fa', 
-            'Suggestive' => 'orange',
-            'Erotica' => 'red',
-            default => '#ccc'
-        };
-        
-        $genres = explode(",", $row['genres']);
+            $status_color = match ($row['publicationStatus']) {
+                'Ongoing' => '#04d000',
+                'Hiatus' => 'red',
+                'Completed' => '#00c9f5',
+                default => 'gray'
+            };
+
+            $rating_color = match ($row['contentRating']) {
+                'Safe' => '#f8f9fa', 
+                'Suggestive' => 'orange',
+                'Erotica' => 'red',
+                default => '#ccc'
+            };
     ?>
-    
-    <div class="manga-card">
+
+    <div class="manga-card" data-read-status="<?= strtolower(htmlspecialchars($row['readStatus'])) ?>">
         <a href="<?= $row['url'] ?>" target="_blank">
             <img src="../../assets/<?= $row['cover'] ?>" alt="Comic Cover" class="manga-cover">
         </a>
         <div class="manga-details">
             <h3><?= $row["title"] ?></h3>
-            
-            <!-- Publication Status -->
             <div class="status-box">
                 <span class="status-circle" style="background-color: <?= $status_color ?>;"></span>
                 <span class="status-text"><?= $row['publicationStatus'] ?></span>
             </div>
-            
-            <!-- Content Rating, Genres, and Themes -->
             <div class="info-row">
                 <span class="rating-box" style="background-color: <?= $rating_color ?>;">
                     <?= $row['contentRating'] ?>
                 </span>
-
-                <?php  
+                <?php
                 if (!empty($row['genres'])) {
-                    $genresArray = explode(',', $row['genres']);
-                    foreach ($genresArray as $genre) {
+                    foreach (explode(',', $row['genres']) as $genre) {
                         echo "<span class='genre'>$genre</span>";
                     }
                 }
- 
+
                 if (!empty($row['themes'])) {
-                    $themesArray = explode(',', $row['themes']);
-                    foreach ($themesArray as $theme) {
+                    foreach (explode(',', $row['themes']) as $theme) {
                         echo "<span class='theme'>$theme</span>";
                     }
                 }
                 ?>
             </div>
-            
-            <!-- Synopsis -->
             <p class="synopsis"><?= $row['synopsis'] ?></p>
         </div>
     </div>
 
-    <?php 
-        if ($count % 2 == 1) echo "</div>"; // Close row after two items
-        $count++;
-    }
+    <?php
+            if ($count % 2 == 1) echo "</div>";
+            $count++;
+        }
 
-    if ($count % 2 == 1) echo "</div>"; // Close any unclosed row
+        if ($count % 2 == 1) echo "</div>";
+    } else {
+        echo "<div style='text-align: center; color: #fff; font-size: 24px; margin-top: 50px;'>No comics added to Library</div>";
+    }
     ?>
 </div>
+
 
 <style>
     .library-title {
@@ -185,6 +196,7 @@ $totalComics = $rowCount['total'];
         border-radius: 5px;
         padding: 15px;
         align-items: flex-start;
+        height: 250px;
     }
 
     .manga-cover {
@@ -272,19 +284,56 @@ $totalComics = $rowCount['total'];
         height: 10px; /* Adjust the height of the fading effect */
         background: linear-gradient(transparent, #2c2c2e); /* Background should match the container */
     }
+
+    .no-results-message {
+        display: none; 
+        padding: 10px 0;
+        text-align: center; 
+        color: #fff; 
+        font-size: 16px; 
+        margin-top: 50px;
+        border-radius: 5px; 
+        background-color: #2c2c2c; 
+    }
 </style>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const buttons = document.querySelectorAll(".status-btn");
+        const cards = document.querySelectorAll(".manga-card");
+        const noResultsMessage = document.getElementById("no-results-message");
+
+        function filterCards(status) {
+            const selected = status.toLowerCase();
+            let matchCount = 0;
+
+            cards.forEach(card => {
+                const cardStatus = (card.getAttribute("data-read-status") || "").toLowerCase();
+                if (selected === "all" || cardStatus === selected) {
+                    card.style.display = "flex";
+                    matchCount++;
+                } else {
+                    card.style.display = "none";
+                }
+            });
+
+            if (matchCount === 0) {
+                noResultsMessage.style.display = "block";
+            } else {
+                noResultsMessage.style.display = "none";
+            }
+
+        }
+
+        filterCards("all");
 
         buttons.forEach(button => {
             button.addEventListener("click", function () {
-                // Remove 'active' class from all buttons
                 buttons.forEach(btn => btn.classList.remove("active"));
-
-                // Add 'active' class to clicked button
                 this.classList.add("active");
+
+                const selectedStatus = this.getAttribute("data-status") || "";
+                filterCards(selectedStatus);
             });
         });
     });

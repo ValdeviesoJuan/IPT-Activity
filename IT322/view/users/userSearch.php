@@ -455,7 +455,7 @@ include("../users/includes/sidebar.php");
         border-radius: 5px;
         padding: 15px;
         align-items: flex-start;
-        height: 100%;
+        height: 250px;
     }
 
     .manga-cover {
@@ -543,6 +543,7 @@ include("../users/includes/sidebar.php");
         height: 10px; /* Adjust the height of the fading effect */
         background: linear-gradient(transparent, #2c2c2e); /* Background should match the container */
     }
+
 
     /* Responsive adjustments */
     @media (max-width: 768px) {

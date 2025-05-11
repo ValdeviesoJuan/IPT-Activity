@@ -40,6 +40,33 @@
 
 <?php
   session_start();
+
+  function forceLogoutWithMessage($message) {
+      // Clear all session data
+      $_SESSION = [];
+      session_unset();
+      session_destroy();
+
+      // Start a new session to carry the message
+      session_start();
+      $_SESSION["message"] = $message;
+      $_SESSION["code"] = "error";
+
+      // Redirect to login page
+      header("Location: ../../login.php");
+      exit();
+  }
+
+  if (!isset($_SESSION["auth"]) || $_SESSION["auth"] !== true) {
+      forceLogoutWithMessage("Please login to access this page.");
+  }
+
+  $fullName = $_SESSION["authUser"]["fullName"];
+  $role = $_SESSION["role"];
+
+  if ($role != "User") {
+      forceLogoutWithMessage("Access denied. Please login with an account that has the correct privileges.");
+  }
 ?>
 
 <body style="background-color: #1a1a1c;">
