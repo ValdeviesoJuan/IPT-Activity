@@ -46,19 +46,16 @@ if (!empty($artist)) {
     $query .= " AND ar.artistName LIKE '%$artist%'";
 }
 
-// Handle genres
 if (!empty($genres)) {
     $genrePlaceholders = "'" . implode("','", $genres) . "'";
     $query .= " AND g.genre IN ($genrePlaceholders)";
 }
 
-// Handle themes
 if (!empty($themes)) {
     $themePlaceholders = "'" . implode("','", $themes) . "'";
     $query .= " AND t.theme IN ($themePlaceholders)";
 }
 
-// Sorting
 $sortOptions = [
     "Latest Upload" => "ORDER BY c.publicationDate DESC",
     "Oldest Upload" => "ORDER BY c.publicationDate ASC",

@@ -30,11 +30,11 @@ if(isset($_POST["login"])) {
             ];
 
             if($userRole == 'Admin'){
-                $_SESSION['message'] = "Welcome Admin " . $fullname;
+                $_SESSION['message'] = "Welcome " . $fullname;
                 $_SESSION["code"] = "success";
                 header("Location: ../view/admin/index.php");
             } else if ($userRole == "User"){
-                $_SESSION['message'] = "Welcome User " . $fullname;
+                $_SESSION['message'] = "Welcome Admin " . $fullname;
                 $_SESSION["code"] = "success";
                 header("Location: ../view/users/index.php");
             } else {

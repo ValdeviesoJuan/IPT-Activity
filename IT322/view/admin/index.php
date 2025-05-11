@@ -69,11 +69,11 @@ include("./includes/sidebar.php");
                 <?php
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>";
-                    echo "<td>{$row['title']}</td>";
+                    echo "<td class='title-cell'>{$row['title']}</td>";
                     echo "<td>{$row['authorName']}</td>";
                     echo "<td>{$row['artistName']}</td>";
-                    echo "<td>" . (!empty($row['genres']) ? $row['genres'] : 'N/A') . "</td>";
-                    echo "<td>" . (!empty($row['themes']) ? $row['themes'] : 'N/A') . "</td>";
+                    echo "<td class='genre-cell'>" . (!empty($row['genres']) ? str_replace(',', ', ', $row['genres']) : 'N/A') . "</td>";
+                    echo "<td class='theme-cell'>" . (!empty($row['themes']) ? str_replace(',', ', ', $row['themes']) : 'N/A') . "</td>";
                     echo "<td><img src='../../assets/{$row['cover']}' alt='Comic Cover' class='comic-cover'></td>";
                     echo "<td><a href='{$row['url']}' target='_blank' class='btn btn-primary btn-sm'>Click here</a></td>";
                     echo "</tr>";
@@ -86,7 +86,7 @@ include("./includes/sidebar.php");
 
     <!-- Add Comic -->
     <div class="card bg-dark text-white p-3 mt-4">
-        <h4>Add Comic</h4>
+        <h4 >Add Comic</h4>
         <form action="uploadComic.php" method="POST" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-3">
@@ -190,6 +190,33 @@ include("./includes/sidebar.php");
 </div>
 
 <style>
+    .title-cell {
+        white-space: normal !important;
+        word-break: normal;
+        overflow-wrap: break-word;
+        max-width: 300px;
+        padding: 5px;
+        hyphens: auto;
+    }
+
+    .genre-cell {
+        white-space: normal !important;
+        word-break: normal;
+        overflow-wrap: break-word;
+        max-width: 250px; 
+        padding: 5px;
+        hyphens: auto;
+    }
+
+    .theme-cell {
+        white-space: normal !important;
+        word-break: normal;
+        overflow-wrap: break-word;
+        max-width: 200px; 
+        padding: 5px;
+        hyphens: auto;
+    }
+
     .input-button {
         background-color: #2c2c2c; 
         color: white;

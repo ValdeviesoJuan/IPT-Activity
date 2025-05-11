@@ -19,8 +19,15 @@ include("../users/includes/sidebar.php");
 <?php
 include("../../dB/config.php");
 
-$queryCount = "SELECT COUNT(*) as total FROM comics";
-$resultCount = mysqli_query($conn, $queryCount);
+$userId = $_SESSION['authUser']['userId'];
+$queryCount = "SELECT COUNT(DISTINCT ul.comicId) as total 
+               FROM userLibrary ul 
+               WHERE ul.userId = ?";
+$stmt = mysqli_prepare($conn, $queryCount);
+mysqli_stmt_bind_param($stmt, 'i', $userId);
+mysqli_stmt_execute($stmt);
+
+$resultCount = mysqli_stmt_get_result($stmt);
 $rowCount = mysqli_fetch_assoc($resultCount);
 $totalComics = $rowCount['total'];
 ?>
@@ -31,7 +38,7 @@ $totalComics = $rowCount['total'];
 
 <div class="manga-results">
     <div id="no-results-message" class="no-results-message">
-        No comic with this status
+        No comics added here
     </div>
     <?php
     include("../../dB/config.php");
@@ -189,6 +196,7 @@ $totalComics = $rowCount['total'];
         border-radius: 5px;
         padding: 15px;
         align-items: flex-start;
+        height: 250px;
     }
 
     .manga-cover {
