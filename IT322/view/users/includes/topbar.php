@@ -1,3 +1,37 @@
+<?php
+include("../../dB/config.php");
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+$user_id = $_SESSION['userId'] ?? null;
+
+if ($user_id !== null) {
+    $stmt = $conn->prepare("
+        SELECT id, comicId, message, createdAt, type, userId 
+        FROM notifications 
+        WHERE userId IS NULL OR userId = ?
+        ORDER BY createdAt DESC 
+        LIMIT 5
+    ");
+    $stmt->bind_param("i", $user_id);
+} else {
+    $stmt = $conn->prepare("
+        SELECT id, comicId, message, createdAt, type, userId 
+        FROM notifications 
+        WHERE userId IS NULL 
+        ORDER BY createdAt DESC 
+        LIMIT 5
+    ");
+}
+
+$stmt->execute();
+$result = $stmt->get_result();
+$notificationCount = $result->num_rows;
+?>
+
+
+
 <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center" style="background-color: #191a1c;">
 
@@ -27,145 +61,29 @@
       </li><!-- End Search Icon-->
 
       <li class="nav-item dropdown">
-
-        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" aria-label="View Notifications">
           <i class="bi bi-bell" style="color: white;"></i>
-          <span class="badge bg-primary badge-number">4</span>
-        </a><!-- End Notification Icon -->
+          <span class="badge bg-primary badge-number" id="notificationCount">0</span>
+        </a>
 
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-          <li class="dropdown-header">
-            You have 4 new notifications
+          <li class="dropdown-header" id="notificationHeader">
+            You have 0 new notification<span id="notificationPlural">s</span>
             <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
           </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li class="notification-item">
-            <i class="bi bi-exclamation-circle text-warning"></i>
-            <div>
-              <h4>New Comic Release!</h4>
-              <p>"The Dark Crusader" Issue #10 is out now!</p>
-              <p>30 min. ago</p>
-            </div>
-          </li>
+          <li><hr class="dropdown-divider"></li>
 
           <li>
-            <hr class="dropdown-divider">
+            <ul id="notificationList" class="list-unstyled mb-0">
+              <!-- JS will append <li> notification items here -->
+            </ul>
           </li>
 
-          <li class="notification-item">
-            <i class="bi bi-x-circle text-danger"></i>
-            <div>
-              <h4>Limited Edition Alert!</h4>
-              <p>Only 5 copies left of "Galactic Warriors" signed edition!</p>
-              <p>1 hr. ago</p>
-            </div>
-          </li>
-
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li class="notification-item">
-            <i class="bi bi-check-circle text-success"></i>
-            <div>
-              <h4>Order Shipped!</h4>
-              <p>Your order #45678 has been dispatched.</p>
-              <p>2 hrs. ago</p>
-            </div>
-          </li>
-
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li class="notification-item">
-            <i class="bi bi-info-circle text-primary"></i>
-            <div>
-              <h4>Comic Con Update</h4>
-              <p>Meet the creators of "Neo City Chronicles" this Saturday!</p>
-              <p>4 hrs. ago</p>
-            </div>
-          </li>
-
-          <li>
-            <hr class="dropdown-divider">
-          </li>
           <li class="dropdown-footer">
             <a href="#">Show all notifications</a>
           </li>
-
-        </ul><!-- End Notification Dropdown Items -->
-
-      </li><!-- End Notification Nav -->
-
-      <li class="nav-item dropdown">
-
-        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" style="color: white;">
-          <i class="bi bi-chat-left-text"></i>
-          <span class="badge bg-success badge-number">3</span>
-        </a><!-- End Messages Icon -->
-
-        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-          <li class="dropdown-header">
-            You have 3 new messages
-            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li class="message-item">
-            <a href="#">
-              <img src="../../assets/img/kentImage.jpg" alt="" class="rounded-circle">
-              <div>
-                <h4>Kent "LiverLover" Vicente</h4>
-                <p>Recommended a new and upcoming comic. Click Now!</p>
-                <p>4 hrs. ago</p>
-              </div>
-            </a>
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li class="message-item">
-            <a href="#">
-              <img src="../../assets/img/geloImage.jpg" alt="" class="rounded-circle">
-              <div>
-                <h4>Gelo "HaremBoii" Pagutayao</h4>
-                <p>Recommended a new and upcoming comic. Click Now!</p>
-                <p>6 hrs. ago</p>
-              </div>
-            </a>
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li class="message-item">
-            <a href="#">
-              <img src="../../assets/img/shuaImage.jpg" alt="" class="rounded-circle">
-              <div>
-                <h4>Joshua "Bakuhatsu" Amper</h4>
-                <p>Recommended a new and upcoming comic. Click Now!</p>
-                <p>8 hrs. ago</p>
-              </div>
-            </a>
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li class="dropdown-footer">
-            <a href="#">Show all messages</a>
-          </li>
-
-        </ul><!-- End Messages Dropdown Items -->
-
-      </li><!-- End Messages Nav -->
+        </ul>
+      </li>
 
       <li class="nav-item dropdown pe-3">
 
@@ -315,5 +233,84 @@
       });
     });
   </script>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    fetch('/IPT-Activity/IT322/view/admin/get_notifications.php')
+
+      .then(res => res.json())
+      .then(data => {
+        console.log("Notification data:", data); // Debugging
+
+        const count = data.count || 0;
+        const list = data.notifications || [];
+
+        document.getElementById("notificationCount").textContent = count;
+        document.getElementById("notificationHeader").innerHTML = `
+          You have ${count} new notification${count !== 1 ? 's' : ''}
+          <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+        `;
+
+        const container = document.getElementById("notificationList");
+        container.innerHTML = "";
+
+        if (list.length === 0) {
+          container.innerHTML = `<li class="notification-item text-center p-2">No notifications</li>`;
+          return;
+        }
+
+        list.forEach(item => {
+          const li = document.createElement("li");
+          li.className = "notification-item";
+          li.innerHTML = `
+            <div>
+              <h4>${item.type.replace("_", " ").toUpperCase()}</h4>
+              <p>${item.message}</p>
+              <p class="small text-muted">${new Date(item.createdAt).toLocaleString()}</p>
+            </div>
+          `;
+          container.appendChild(li);
+
+          const divider = document.createElement("li");
+          divider.innerHTML = '<hr class="dropdown-divider">';
+          container.appendChild(divider);
+        });
+      })
+      .catch(err => {
+        console.error("Failed to load notifications:", err);
+      });
+  });
+
+  function renderNotifications(notifications) {
+  const notificationCount = notifications.length;
+  const countBadge = document.getElementById("notificationCount");
+  const header = document.getElementById("notificationHeader");
+  const plural = document.getElementById("notificationPlural");
+  const list = document.getElementById("notificationList");
+
+  countBadge.textContent = notificationCount;
+  plural.textContent = notificationCount !== 1 ? "s" : "";
+  header.innerHTML = `You have ${notificationCount} new notification${notificationCount !== 1 ? "s" : ""} 
+    <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>`;
+
+  list.innerHTML = ""; // clear existing notifications
+
+  if (notificationCount === 0) {
+    list.innerHTML = "<li class='text-center text-muted'>No notifications</li>";
+    return;
+  }
+
+  notifications.forEach(notif => {
+    const li = document.createElement("li");
+    li.classList.add("notification-item", "px-3", "py-2");
+    li.innerHTML = `
+      <div><strong>${notif.message}</strong></div>
+      <small class="text-muted">${new Date(notif.createdAt).toLocaleString()}</small>
+    `;
+    list.appendChild(li);
+  });
+}
+  </script>
+
 
 </header><!-- End Header -->

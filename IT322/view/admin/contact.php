@@ -10,9 +10,9 @@ include("./includes/sidebar.php");
     <!-- Contact Information -->
     <div class="card bg-dark text-white p-3">
         <h4>Our Contact Details</h4>
-        <p><i class="bi bi-envelope-fill"></i> Email: support@comiczone.com</p>
-        <p><i class="bi bi-telephone-fill"></i> Phone: +1 234 567 890</p>
-        <p><i class="bi bi-geo-alt-fill"></i> Address: 123 Comic Street, Gotham City</p>
+        <p><i class="bi bi-envelope-fill"></i> Email: CommicZone404@gmail.com</p>
+        <p><i class="bi bi-telephone-fill"></i> Phone: 09603306689</p>
+        <p><i class="bi bi-geo-alt-fill"></i> Address: Zone 9E Hilltop, Macanhan, CDO</p>
     </div>
 
     <!-- Contact Form -->
