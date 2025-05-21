@@ -41,13 +41,11 @@
 <?php
   session_start();
 
-  function forceLogoutWithMessage($message) {
-      // Clear all session data
+  function forceLogoutWithMessage($message) { 
       $_SESSION = [];
       session_unset();
       session_destroy();
-
-      // Start a new session to carry the message
+ 
       session_start();
       $_SESSION["message"] = $message;
       $_SESSION["code"] = "error";
