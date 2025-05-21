@@ -88,8 +88,9 @@ while ($row = mysqli_fetch_assoc($result)) {
 
     $status_color = match ($row['publicationStatus']) {
         'Ongoing' => '#04d000',
-        'Hiatus' => 'red',
+        'Hiatus' => 'yellow',
         'Completed' => '#00c9f5',
+        'Cancelled' => 'red',
         default => 'gray'
     };
 

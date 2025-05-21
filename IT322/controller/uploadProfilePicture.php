@@ -24,10 +24,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profileImage"])) {
         if (move_uploaded_file($_FILES["profileImage"]["tmp_name"], $uploadFile)) {
             $relativePath = "../../assets/profileImages/" . $fileName;
 
-            // Update database
             $updateQuery = "UPDATE users SET profilePicture = '$relativePath' WHERE userId = '$userId'";
             if (mysqli_query($conn, $updateQuery)) {
-                $_SESSION["authUser"]["profilePicture"] = $relativePath; // update session
+                $_SESSION["authUser"]["profilePicture"] = $relativePath;
                 $_SESSION["message"] = "Profile picture updated!";
                 $_SESSION["code"] = "success";
             } else {
