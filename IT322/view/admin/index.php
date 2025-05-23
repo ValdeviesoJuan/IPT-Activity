@@ -21,10 +21,28 @@ include("./includes/sidebar.php");
                 <p id="total-users">Loading...</p> <!-- Dynamic count here -->
             </div>
         </div>
+        <?php
+        include("../../dB/config.php");
+
+        $query = "SELECT c.comicId, c.title, c.views
+            FROM comics c
+            ORDER BY c.views DESC
+            LIMIT 1";
+
+        $result = mysqli_query($conn, $query);
+        ?>
         <div class="col-md-4">
             <div class="card text-white p-3 admin-card" style="background-color: #2c2c2c;">
                 <h4>Most Popular Comic</h4>
-                <p>Spider-Man</p> <!-- Replace with dynamic data -->
+                <p>
+                <?php 
+                if ($popularComic = mysqli_fetch_assoc($result)) {
+                    echo htmlspecialchars($popularComic['title']);
+                } else {
+                    echo "None";
+                }
+                ?> 
+                </p>  
             </div>
         </div>
     </div>

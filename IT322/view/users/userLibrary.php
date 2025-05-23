@@ -29,7 +29,7 @@ mysqli_stmt_execute($stmt);
 
 $resultCount = mysqli_stmt_get_result($stmt);
 $rowCount = mysqli_fetch_assoc($resultCount);
-$totalComics = $rowCount['total'];
+$totalComics = $rowCount['total']; 
 ?>
  
 <p class="comic-counter">
@@ -90,11 +90,13 @@ $totalComics = $rowCount['total'];
     ?>
 
     <div class="manga-card" data-read-status="<?= strtolower(htmlspecialchars($row['readStatus'])) ?>">
-        <a href="<?= $row['url'] ?>" target="_blank">
+        <a href="<?= $row['url'] ?>" target="_blank" class="comic-link" data-comic-id="<?= $row['comicId'] ?>"> <!-- updates comicS views each click -->
             <img src="../../assets/<?= $row['cover'] ?>" alt="Comic Cover" class="manga-cover">
         </a>
         <div class="manga-details">
-            <h3><?= $row["title"] ?></h3>
+            <a href="<?= $row['url'] ?>" target="_blank" class="comic-link" data-comic-id="<?= $row['comicId'] ?>"> <!-- updates comicS views each click -->
+                <h3><?= $row["title"] ?></h3>
+            </a>
             <div class="status-box">
                 <span class="status-circle" style="background-color: <?= $status_color ?>;"></span>
                 <span class="status-text"><?= $row['publicationStatus'] ?></span>
@@ -334,6 +336,24 @@ $totalComics = $rowCount['total'];
 
                 const selectedStatus = this.getAttribute("data-status") || "";
                 filterCards(selectedStatus);
+            });
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".comic-link").forEach(link => {
+            link.addEventListener("click", function () {
+                const comicId = this.dataset.comicId;
+
+                if (!comicId) return;
+ 
+                fetch("../../controller/incrementView.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: `comicId=${comicId}`
+                });
             });
         });
     });

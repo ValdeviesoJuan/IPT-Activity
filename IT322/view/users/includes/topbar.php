@@ -4,9 +4,9 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-$user_id = $_SESSION['userId'] ?? null;
+$userId = $_SESSION['userId'] ?? null;
 
-if ($user_id !== null) {
+if ($userId !== null) {
     $stmt = $conn->prepare("
         SELECT id, comicId, message, createdAt, type, userId 
         FROM notifications 
@@ -14,7 +14,7 @@ if ($user_id !== null) {
         ORDER BY createdAt DESC 
         LIMIT 5
     ");
-    $stmt->bind_param("i", $user_id);
+    $stmt->bind_param("i", $userId);
 } else {
     $stmt = $conn->prepare("
         SELECT id, comicId, message, createdAt, type, userId 
@@ -29,8 +29,6 @@ $stmt->execute();
 $result = $stmt->get_result();
 $notificationCount = $result->num_rows;
 ?>
-
-
 
 <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center" style="background-color: #191a1c;">

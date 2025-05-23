@@ -19,10 +19,10 @@ include("../users/includes/sidebar.php");
                 $titleEscaped = htmlspecialchars($row['title'], ENT_QUOTES);
                 $coverEscaped = htmlspecialchars($row['cover'], ENT_QUOTES);
                 echo "<div class='comic-item'>";
-                    echo "<a href='{$row['url']}' target='_blank'>";
+                    echo "<a href='{$row['url']}' target='_blank' class='comic-link' data-comic-id='{$row['comicId']}'>";
                         echo "<img src='../../assets/{$row['cover']}' alt='Comic Cover' class='comic-cover'>";
                     echo "</a>";
-                    echo "<a href='{$row['url']}' target='_blank'>{$row["title"]}</a>";
+                    echo "<a href='{$row['url']}' target='_blank' class='comic-link' data-comic-id='{$row['comicId']}'>{$row["title"]}</a>";
                     echo "<button class='add-library-btn' onclick='openModal({$row['comicId']}, \"{$titleEscaped}\", \"{$coverEscaped}\")'>";
                         echo "</i> <i class='ri-bookmark-line'></i>Add to Library";
                     echo "</button>";
@@ -352,6 +352,24 @@ include("../users/includes/sidebar.php");
 </style>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".comic-link").forEach(link => {
+            link.addEventListener("click", function () {
+                const comicId = this.dataset.comicId;
+
+                if (!comicId) return;
+ 
+                fetch("../../controller/incrementView.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: `comicId=${comicId}`
+                });
+            });
+        });
+    });
+    
     let selectedComicId = null;
 
     function openModal(comicId, title, cover) {
@@ -387,8 +405,7 @@ include("../users/includes/sidebar.php");
             closeModal();
         });
     }
-
-    // Optional: Close modal when clicking outside
+ 
     window.onclick = function(event) {
         const modal = document.getElementById("libraryModal");
         if (event.target == modal) {
