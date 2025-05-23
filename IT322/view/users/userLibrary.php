@@ -38,7 +38,7 @@ $totalComics = $rowCount['total'];
 
 <div class="manga-results">
     <div id="no-results-message" class="no-results-message">
-        No comics added here
+        No comics added here <a href='index.php'>ADD A COMIC</a>
     </div>
     <?php
     include("../../dB/config.php");
@@ -122,11 +122,11 @@ $totalComics = $rowCount['total'];
     </div>
 
     <?php
-            if ($count % 2 == 1) echo "</div>";
-            $count++;
-        }
+    if ($count % 2 == 1) echo "</div>";
+        $count++;
+    }
 
-        if ($count % 2 == 1) echo "</div>";
+    if ($count % 2 == 1) echo "</div>";
     } else {
         echo "<div style='text-align: center; color: #fff; font-size: 24px; margin-top: 50px;'>No comics added to Library</div>";
     }

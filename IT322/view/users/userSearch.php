@@ -151,8 +151,9 @@ include("../users/includes/sidebar.php");
         // Determine Publication Status Color
         $status_color = match ($row['publicationStatus']) {
             'Ongoing' => '#04d000',
-            'Hiatus' => 'red',
+            'Hiatus' => 'yellow',
             'Completed' => '#00c9f5',
+            'Cancelled' => 'red',
             default => 'gray'
         };
 

@@ -1,6 +1,6 @@
 <?php
-session_start();
 include("../dB/config.php");
+session_start();
 
 header('Content-Type: application/json');
 
@@ -18,7 +18,6 @@ if (!$comicId || !$readStatus) {
     exit();
 }
 
-// Optional: Prevent duplicates
 $check = "SELECT * FROM userLibrary WHERE userId = ? AND comicId = ?";
 $stmtCheck = $conn->prepare($check);
 $stmtCheck->bind_param("ii", $userId, $comicId);
@@ -35,8 +34,12 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("iis", $userId, $comicId, $readStatus);
 
 if ($stmt->execute()) {
+    $_SESSION["message"] = "Comic added to library";
+    $_SESSION["code"] = "success";
     echo json_encode(['success' => true, 'message' => 'Added to library']);
 } else {
+    $_SESSION["message"] = "Database Error";
+    $_SESSION["code"] = "error";
     echo json_encode(['success' => false, 'message' => 'Database error']);
 }
 ?>

@@ -6,12 +6,11 @@ if(isset($_POST["login"])) {
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    $query = "SELECT `userId`, `firstName`, `lastName`, `email`, `password`, `phoneNumber`, `gender`, `birthday`, `verification`, `role` 
+    $query = "SELECT `userId`, `firstName`, `lastName`, `email`, `password`, `phoneNumber`, `gender`, `birthday`, `profilePicture`, `verification`, `role` 
     FROM `users` WHERE email = '$email' AND password = '$password' LIMIT 1;";
 
     $query_run = mysqli_query($conn, $query);
 
-    
     if($query_run) {
         if(mysqli_num_rows($query_run) > 0) {
             $data = mysqli_fetch_assoc($query_run);
@@ -20,6 +19,7 @@ if(isset($_POST["login"])) {
             $fullname = $data["firstName"]." ".$data["lastName"];
             $emailAddress = $data["email"];
             $userRole = $data["role"];
+            $profilePicture = $data["profilePicture"];
 
             $_SESSION["auth"] = true;
             $_SESSION["role"] = $userRole;
@@ -27,6 +27,7 @@ if(isset($_POST["login"])) {
                 'userId' => $userID,
                 'fullName' => $fullname,
                 'emailAddress' => $emailAddress,
+                'profilePicture' => $profilePicture
             ];
 
             if($userRole == 'Admin'){

@@ -40,7 +40,7 @@ include("../users/includes/sidebar.php");
 <h2 class="mt-5 mb-2">Latest Updates</h2>
 <div class="latest-updates-container">
     <?php
-    include("../../dB/config.php");
+    include("../../dB/config.php"); 
 
     $query = "SELECT c.comicId, c.title, au.authorName, ar.artistName, c.cover, c.url, c.updatedAt,
                         GROUP_CONCAT(DISTINCT g.genre ORDER BY g.genre ASC) AS genres,
@@ -377,14 +377,8 @@ include("../users/includes/sidebar.php");
             })
         })
         .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                $_SESSION["message"] = "Comic added to library";
-                $_SESSION["code"] = "success";
-            } else {
-                $_SESSION["message"] = data.message;
-                $_SESSION["code"] = "error";
-            }
+        .then(data => { 
+            console.log(data);
             closeModal();
         })
         .catch(error => {
