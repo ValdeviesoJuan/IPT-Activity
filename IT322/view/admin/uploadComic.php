@@ -3,18 +3,17 @@ include("../../dB/config.php");
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $userId = $_SESSION['authUser']['userId'];
+    
     $title = mysqli_real_escape_string($conn, $_POST['title']); 
     $synopsis = mysqli_real_escape_string($conn, $_POST['synopsis']);  
     $author = mysqli_real_escape_string($conn, $_POST['author']);
-    $artist = mysqli_real_escape_string($conn, $_POST['artist']); 
+    $artist = mysqli_real_escape_string($conn, $_POST['artist']);
+    $comicUrl = mysqli_real_escape_string($conn, $_POST['comicUrl']);
     $contentRating = mysqli_real_escape_string($conn, $_POST['contentRating']);
     $publicationStatus = mysqli_real_escape_string($conn, $_POST['publicationStatus']);
     $publicationDate = mysqli_real_escape_string($conn, $_POST['publicationDate']);
-
-    $_SESSION['message'] = "Comic Added Successfully";
-    $_SESSION['code'] = "success";
-
-    // Check if author exists
+ 
     $author_query = "SELECT authorId FROM authors WHERE authorName = '$author'";
     $author_result = mysqli_query($conn, $author_query);
     if (mysqli_num_rows($author_result) == 0) {
@@ -23,8 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $author_id = mysqli_fetch_assoc($author_result)['authorId'];
     }
-
-    // Check if artist exists
+ 
     $artist_query = "SELECT artistId FROM artists WHERE artistName = '$artist'";
     $artist_result = mysqli_query($conn, $artist_query);
     if (mysqli_num_rows($artist_result) == 0) {
@@ -44,8 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $uploadFile = $uploadDir . $fileName;
 
     if (move_uploaded_file($_FILES["comicCover"]["tmp_name"], $uploadFile)) {
-        $coverPath = "uploads/" . $fileName;
-        $comicUrl = "";
+        $coverPath = "uploads/" . $fileName; 
 
         $sql = "INSERT INTO comics (title, synopsis, cover, url, publicationDate, publicationStatus, contentRating) 
                 VALUES ('$title', '$synopsis', '$coverPath', '$comicUrl', '$publicationDate', '$publicationStatus', '$contentRating')";
@@ -72,8 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     exit();
                 }
             }
-
-            // Add Themes
+ 
             if (!empty($_POST['theme'])) {
                 $themes = explode(", ", $_POST['theme']);
                 foreach ($themes as $themeName) {
@@ -85,8 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
                 }
             }
-
-            // Add Genres
+ 
             if (!empty($_POST['genre'])) {
                 $genres = explode(", ", $_POST['genre']);
                 foreach ($genres as $genreName) {
@@ -98,12 +93,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
                 }
             }
-
-            // INSERT NOTIFICATION FOR ALL USERS (userId = NULL)
+ 
             $notificationMsg = mysqli_real_escape_string($conn, "A new comic titled '$title' was added.");
-            $timestamp = date("Y-m-d H:i:s");
-            $notifSql = "INSERT INTO notifications (message, type, comicId, createdAt, userId)
-                         VALUES ('$notificationMsg', 'new_comic', '$comicId', '$timestamp', NULL)";
+            $notifSql = "INSERT INTO notifications (message, type, comicId, userId)
+                         VALUES ('$notificationMsg', 'new_comic', '$comicId', $userId)";
             if (!mysqli_query($conn, $notifSql)) {
                 error_log("Notification insert failed: " . mysqli_error($conn));
             }

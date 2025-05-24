@@ -11,7 +11,7 @@ include("../users/includes/sidebar.php");
         <?php
         include("../../dB/config.php");
 
-        $query = "SELECT * FROM comics ORDER BY createdAt DESC LIMIT 10"; // Adjust limit as needed
+        $query = "SELECT * FROM comics ORDER BY createdAt DESC LIMIT 10";
         $result = mysqli_query($conn, $query);
 
         if (mysqli_num_rows($result) > 0) {
@@ -22,7 +22,7 @@ include("../users/includes/sidebar.php");
                     echo "<a href='{$row['url']}' target='_blank' class='comic-link' data-comic-id='{$row['comicId']}'>";
                         echo "<img src='../../assets/{$row['cover']}' alt='Comic Cover' class='comic-cover'>";
                     echo "</a>";
-                    echo "<a href='{$row['url']}' target='_blank' class='comic-link' data-comic-id='{$row['comicId']}'>{$row["title"]}</a>";
+                    echo "<a href='{$row['url']}' target='_blank' class='comic-link' data-comic-id='{$row['comicId']}'><p class='comic-title'>{$row["title"]}</p></a>";
                     echo "<button class='add-library-btn' onclick='openModal({$row['comicId']}, \"{$titleEscaped}\", \"{$coverEscaped}\")'>";
                         echo "</i> <i class='ri-bookmark-line'></i>Add to Library";
                     echo "</button>";
@@ -56,7 +56,7 @@ include("../users/includes/sidebar.php");
                 LEFT JOIN artists ar ON car.artistId = ar.artistId
                 GROUP BY c.comicId
                 ORDER BY c.comicId DESC
-                LIMIT 5";
+                LIMIT 10";
 
     $result = mysqli_query($conn, $query);
 
@@ -72,11 +72,11 @@ include("../users/includes/sidebar.php");
             echo '<div class="update-column">';
             foreach ($chunk as $comic) {
                 echo '<div class="comic-item">';
-                    echo "<a class='comic-link' href='{$comic['url']}' target='_blank'>";
+                    echo "<a class='comic-link' href='{$comic['url']}' data-comic-id='{$comic['comicId']}' target='_blank'>";
                         echo "<img src='../../assets/{$comic['cover']}' alt='Comic Cover' class='comic-cover'>";
                     echo "</a>";
                     echo "<div class='comic-info'>";
-                        echo "<a class='comic-link' href='{$comic['url']}' target='_blank'>";
+                        echo "<a class='comic-link' href='{$comic['url']}' data-comic-id='{$comic['comicId']}' target='_blank'>";
                             echo "<p class='comic-title'>{$comic["title"]}</p>";
                         echo "</a>";
                         echo "<div class='comic-meta'>";
@@ -140,9 +140,15 @@ include("../users/includes/sidebar.php");
 }
 
 .recently-added-container {
-    overflow-x: auto;
-    white-space: nowrap; 
-    direction: ltr;  
+    overflow-x: hidden;
+    overflow-y: auto;  
+    white-space: nowrap;
+    direction: ltr;
+    cursor: grab;
+}
+
+.recently-added-container.active {
+    cursor: grabbing;  
 }
 
 .recently-added {
@@ -158,19 +164,19 @@ include("../users/includes/sidebar.php");
     margin-right: 25px;
     cursor: pointer;
     color: #fff; 
-}
+} 
 
 .recently-added .comic-item a {
     margin-top: 5px;
     font-size: 18px;
     color: #fff;
     font-weight: bold;
-    word-wrap: break-word; 
-    white-space: normal;  
-    max-width: 120px; 
-    overflow-wrap: break-word; 
+    max-width: 120px;
     text-decoration: none;
     cursor: pointer;
+    white-space: normal;
+    word-break: normal;       
+    overflow-wrap: break-word;     
 }
 
 .recently-added .comic-item a:hover {
@@ -352,6 +358,37 @@ include("../users/includes/sidebar.php");
 </style>
 
 <script>
+    const container = document.querySelector('.recently-added-container');
+
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    container.addEventListener('mousedown', (e) => {
+        isDown = true;
+        container.classList.add('active');
+        startX = e.pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
+    });
+
+    container.addEventListener('mouseleave', () => {
+        isDown = false;
+        container.classList.remove('active');
+    });
+
+    container.addEventListener('mouseup', () => {
+        isDown = false;
+        container.classList.remove('active');
+    });
+
+    container.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - container.offsetLeft;
+        const walk = (x - startX) * 2; 
+        container.scrollLeft = scrollLeft - walk;
+    });
+
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".comic-link").forEach(link => {
             link.addEventListener("click", function () {

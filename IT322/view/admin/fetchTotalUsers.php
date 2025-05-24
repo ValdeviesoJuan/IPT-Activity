@@ -1,9 +1,12 @@
 <?php
-include("../../dB/config.php"); // Ensure database connection
+include("../../dB/config.php"); 
 
-$query = "SELECT COUNT(*) AS total FROM users"; // Count total users
-$result = mysqli_query($conn, $query);
-$row = mysqli_fetch_assoc($result);
+$query = "SELECT COUNT(*) AS total FROM users"; 
+$result = mysqli_query($conn, $query); 
 
-echo $row['total']; // Output total user count
+if ($row = mysqli_fetch_assoc($result)) {
+    echo $row['total'];
+} else {
+    echo "No Users";
+}
 ?>
