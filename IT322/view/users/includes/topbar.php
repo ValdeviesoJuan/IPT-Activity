@@ -90,7 +90,7 @@ $notificationCount = $result->num_rows;
           alt="<?php echo htmlspecialchars($fullName); ?>'s Profile Picture"
           class="rounded-circle me-2"
           style="width: 35px; height: 35px; object-fit: cover; border: solid 1px white"
-        >
+          >
           <span class="d-none d-md-block dropdown-toggle ps-2" style="color: white;"><?php echo htmlspecialchars($fullName); ?></span>
         </a><!-- End Profile Iamge Icon -->
 
