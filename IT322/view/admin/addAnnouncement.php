@@ -2,7 +2,6 @@
 include("../../dB/config.php");
 session_start();
 
-// Check if form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = mysqli_real_escape_string($conn, $_POST['title']); 
     $message = mysqli_real_escape_string($conn, $_POST['message']);  

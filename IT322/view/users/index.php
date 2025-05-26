@@ -5,13 +5,13 @@ include("../users/includes/sidebar.php");
 ?>
 
 <!-- Recently Added Comics Section -->
-<h2 class="mb-4" style="font-weight: bold; margin: 20px 0;">Recently Added</h2>
+<h2 class="mb-4" style="font-weight: bold; margin: 20px 0;">Popular Comics</h2>
 <div class="recently-added-container">
     <div class="recently-added">
         <?php
         include("../../dB/config.php");
 
-        $query = "SELECT * FROM comics ORDER BY createdAt DESC LIMIT 10";
+        $query = "SELECT * FROM comics ORDER BY views DESC LIMIT 10";
         $result = mysqli_query($conn, $query);
 
         if (mysqli_num_rows($result) > 0) {

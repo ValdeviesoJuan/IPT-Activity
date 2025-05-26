@@ -341,7 +341,7 @@ include("./includes/sidebar.php");
 
 <script>
     function searchAuthor(query) {
-        if (query.length < 2) return; // Avoid unnecessary queries
+        if (query.length < 2) return;
         fetch(`searchAuthor.php?q=${query}`)
             .then(response => response.json())
             .then(data => {
