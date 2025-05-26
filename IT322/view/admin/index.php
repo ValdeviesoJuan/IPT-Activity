@@ -18,13 +18,13 @@ include("./includes/sidebar.php");
         <div class="col-md-4">
             <div class="card bg-white text-black p-3 admin-card">
                 <h4>Total Users</h4>
-                <p id="total-users">Loading...</p> <!-- Dynamic count here -->
+                <p id="total-users">Loading...</p> 
             </div>
         </div>
         <div class="col-md-4">
             <div class="card text-white p-3 admin-card" style="background-color: #2c2c2c;">
                 <h4>Most Popular Comic</h4>
-                <p>Spider-Man</p> <!-- Replace with dynamic data -->
+                <p id="popular-comic">Loading...</p> 
             </div>
         </div>
     </div>
@@ -94,12 +94,12 @@ include("./includes/sidebar.php");
                 </div> 
 
                 <div class="col-md-3"> 
-                    <input type="text" class="form-control input-button" id="author" name="author" placeholder="Search or enter an author" onkeyup="searchAuthor(this.value)">
+                    <input type="text" class="form-control input-button" id="author" name="author" placeholder="Search or enter an author" onkeyup="searchAuthor(this.value)" required>
                     <div class="dropdown-menu custom-dropdown-menu" id="author-suggestions"></div>
                 </div>
 
                 <div class="col-md-3"> 
-                    <input type="text" class="form-control input-button" id="artist" name="artist" placeholder="Search or enter an artist" onkeyup="searchArtist(this.value)">
+                    <input type="text" class="form-control input-button" id="artist" name="artist" placeholder="Search or enter an artist" onkeyup="searchArtist(this.value)" required> 
                     <div class="dropdown-menu custom-dropdown-menu" id="artist-suggestions"></div>
                 </div>
                 
@@ -190,6 +190,14 @@ include("./includes/sidebar.php");
 </div>
 
 <style>
+    #total-comics, #total-users {
+        font-size: 24px;
+    }
+
+    #popular-comic {
+        font-size: 18px;
+    }
+
     .title-cell {
         white-space: normal !important;
         word-break: normal;
@@ -333,7 +341,7 @@ include("./includes/sidebar.php");
 
 <script>
     function searchAuthor(query) {
-        if (query.length < 2) return; // Avoid unnecessary queries
+        if (query.length < 2) return;
         fetch(`searchAuthor.php?q=${query}`)
             .then(response => response.json())
             .then(data => {
@@ -373,16 +381,14 @@ include("./includes/sidebar.php");
                 });
             });
     }
-
-    // Close dropdown when clicking outside
+ 
     document.addEventListener("click", function(event) {
         if (!event.target.closest(".custom-dropdown-menu") && !event.target.closest(".input-button")) {
             document.getElementById("author-suggestions").classList.remove("show");
             document.getElementById("artist-suggestions").classList.remove("show");
         }
     });
-
-    //Genre and Theme
+ 
     function toggleDropdown(id) {
         let dropdown = document.getElementById(id);
         dropdown.classList.toggle("show");
@@ -401,8 +407,7 @@ include("./includes/sidebar.php");
             dropdowns.forEach(dropdown => dropdown.classList.remove("show"));
         }
     });
-
-    // Update selected checkboxes
+ 
     function updateSelected(type) {
         let checkboxes = document.querySelectorAll(`#${type}-dropdown input[type="checkbox"]:checked`);
         let selectedValues = Array.from(checkboxes).map(cb => cb.value);
@@ -423,8 +428,8 @@ include("./includes/sidebar.php");
             .catch(error => console.error('Error fetching total comics:', error));
     }
 
-    fetchTotalComics(); // Fetch on page load
-    setInterval(fetchTotalComics, 5000); // Refresh every 5 seconds
+    fetchTotalComics(); 
+    setInterval(fetchTotalComics, 5000); 
 
     function fetchTotalUsers() {
         fetch("fetchTotalUsers.php")
@@ -435,8 +440,20 @@ include("./includes/sidebar.php");
             .catch(error => console.error('Error fetching total users:', error));
     }
 
-    fetchTotalUsers(); // Fetch on page load
-    setInterval(fetchTotalUsers, 5000); // Refresh every 5 seconds
+    fetchTotalUsers(); 
+    setInterval(fetchTotalUsers, 5000);
+
+    function fetchPopularComic() {
+        fetch("fetchPopularComic.php")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("popular-comic").innerText = data;
+            })
+            .catch(error => console.error('Error Finding Popular Comic:', error));
+    }
+
+    fetchPopularComic(); 
+    setInterval(fetchPopularComic, 5000);
 </script>
 
 <?php

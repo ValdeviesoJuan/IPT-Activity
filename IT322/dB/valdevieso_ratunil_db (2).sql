@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 22, 2025 at 11:49 AM
+-- Generation Time: May 26, 2025 at 03:08 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -80,7 +80,10 @@ CREATE TABLE `artists` (
 --
 
 INSERT INTO `artists` (`artistId`, `artistName`, `createdAt`, `updatedAt`) VALUES
-(1, 'Juan Carlos', '2025-03-22 10:25:37', '2025-03-22 10:25:37');
+(1, 'Juan Carlos', '2025-03-22 10:25:37', '2025-03-22 10:25:37'),
+(2, 'Onitsuka', '2025-05-24 10:16:06', '2025-05-24 10:16:06'),
+(3, 'Kurazy', '2025-05-24 10:24:12', '2025-05-24 10:24:12'),
+(4, 'Johnson', '2025-05-24 12:09:03', '2025-05-24 12:21:17');
 
 -- --------------------------------------------------------
 
@@ -100,7 +103,10 @@ CREATE TABLE `authors` (
 --
 
 INSERT INTO `authors` (`authorId`, `authorName`, `createdAt`, `updatedAt`) VALUES
-(1, 'Juan Carlos', '2025-03-22 10:25:37', '2025-03-22 10:25:37');
+(1, 'Juan Carlos', '2025-03-22 10:25:37', '2025-03-22 10:25:37'),
+(2, 'Onitsuka', '2025-05-24 10:16:06', '2025-05-24 10:16:06'),
+(3, 'Kurazy', '2025-05-24 10:24:12', '2025-05-24 10:24:12'),
+(4, 'Johnson', '2025-05-24 12:09:03', '2025-05-24 12:21:27');
 
 -- --------------------------------------------------------
 
@@ -134,7 +140,13 @@ CREATE TABLE `comicartist` (
 --
 
 INSERT INTO `comicartist` (`comicArtistId`, `artistId`, `comicId`) VALUES
-(1, 1, 1);
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 3),
+(4, 1, 4),
+(5, 3, 5),
+(6, 4, 6),
+(7, 4, 7);
 
 -- --------------------------------------------------------
 
@@ -153,7 +165,13 @@ CREATE TABLE `comicauthor` (
 --
 
 INSERT INTO `comicauthor` (`comicAuthorId`, `authorId`, `comicId`) VALUES
-(1, 1, 1);
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 3),
+(4, 2, 4),
+(5, 3, 5),
+(6, 4, 6),
+(7, 4, 7);
 
 -- --------------------------------------------------------
 
@@ -173,7 +191,21 @@ CREATE TABLE `comicgenre` (
 
 INSERT INTO `comicgenre` (`comicGenreId`, `genreId`, `comicId`) VALUES
 (1, 4, 1),
-(2, 18, 1);
+(2, 18, 1),
+(3, 1, 2),
+(4, 2, 2),
+(5, 4, 3),
+(6, 17, 4),
+(7, 19, 4),
+(8, 23, 4),
+(9, 1, 5),
+(10, 6, 5),
+(11, 2, 6),
+(12, 6, 6),
+(13, 7, 6),
+(14, 16, 6),
+(15, 10, 7),
+(16, 17, 7);
 
 -- --------------------------------------------------------
 
@@ -202,6 +234,7 @@ CREATE TABLE `comics` (
   `publicationDate` date NOT NULL,
   `publicationStatus` varchar(50) NOT NULL,
   `contentRating` varchar(50) NOT NULL,
+  `views` int(11) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -210,8 +243,14 @@ CREATE TABLE `comics` (
 -- Dumping data for table `comics`
 --
 
-INSERT INTO `comics` (`comicId`, `title`, `synopsis`, `url`, `cover`, `publicationDate`, `publicationStatus`, `contentRating`, `createdAt`, `updatedAt`) VALUES
-(1, 'That Time I got Reincarnated as a Beauty', 'it was that Time I got reincarnated as a beauty at the city of Everdale', 'https://mangadex.org/', 'uploads/67de902123c74-Long Hair Evelyn.jpg', '2025-03-02', 'Ongoing', 'Safe', '2025-03-22 10:25:37', '2025-03-22 10:25:37');
+INSERT INTO `comics` (`comicId`, `title`, `synopsis`, `url`, `cover`, `publicationDate`, `publicationStatus`, `contentRating`, `views`, `createdAt`, `updatedAt`) VALUES
+(1, 'That Time I got Reincarnated as a Beauty', 'it was that Time I got reincarnated as a beauty at the city of Everdale', 'https://mangadex.org/', 'uploads/67de902123c74-Long Hair Evelyn.jpg', '2025-03-02', 'Ongoing', 'Safe', 103, '2025-03-22 10:25:37', '2025-05-24 10:30:24'),
+(2, 'Oni Girl', 'In a quiet mountain village shrouded in legend, 16-year-old Aiko discovers a shocking truth — she is half-oni, the child of a human mother and a powerful demon father. Branded as cursed and feared by those around her, Aiko struggles to suppress her growing powers and find her place in a world that rejects her.\r\n\r\nWhen ancient seals begin to break and monstrous oni rise to threaten humanity, Aiko becomes an unwilling key in a centuries-old war. Torn between two worlds, she must decide: will she embrace the monstrous side she fears, or forge her own path to protect both humans and oni alike?\r\n\r\nAs allies and enemies blur, Oni Girl is a coming-of-age tale of identity, redemption, and the power of choosing who you become — not what you were born as.', 'https://mangadex.org/', 'uploads/68319c660c079-Robotic Oni Mask Girl.jpg', '2024-02-02', 'Ongoing', 'Suggestive', 0, '2025-05-24 10:16:06', '2025-05-24 12:25:03'),
+(3, 'Bunny Girl Toki', 'In a world where animal spirits once protected the balance of nature, the bonds between humans and the spirit realm have begun to fray. Enter Toki — an energetic, snack-loving high school girl who, after a freak accident during a lunar eclipse, awakens to find she has been fused with the essence of the long-forgotten Moon Rabbit spirit.\r\n\r\nNow with enhanced agility, uncanny hearing, and the mysterious ability to leap between dimensions, Toki is recruited by the hidden agency Spirit Guard to stop rogue spirits — corrupted echoes of forgotten gods — from invading the human world. But between homework, crushes, and battling giant shadow beasts, being a magical bunny girl isn\'t all it\'s cracked up to be.\r\n\r\nArmed with a bo staff that shifts with the moon\'s phase and an attitude as bouncy as her new ears, Toki hops between chaos and comedy in this action-packed magical girl adventure. But as she learns more about the Moon Rabbit’s ancient past, Toki begins to question: is she the spirit’s chosen hero — or its vessel for something much darker?', 'https://mangadex.org/', 'uploads/68319e4c1ab97-Toki Bunny.jpg', '2022-02-16', 'Hiatus', 'Suggestive', 0, '2025-05-24 10:24:12', '2025-05-24 12:25:06'),
+(4, 'Psychotic Pass', 'In the fractured mega-city of Neo-Arkadia, law and order are dictated by the NeuroMetric System—a powerful AI-driven surveillance network that scans citizens’ brainwaves to assess their mental state. Those with a high Psychotic Pass score are flagged as threats to society—sometimes before they’ve even committed a crime.\r\n\r\nElara Voss, a rookie enforcer with a rare immunity to neural profiling, is recruited by the Civic Bureau of Harmony to hunt down latent criminals. But when she uncovers inconsistencies in the system’s algorithm—and a hidden society of \"Ghosts\" living off-grid—Elara begins to question everything she\'s been taught.\r\n\r\nAs tensions rise between state control and human free will, Elara must decide: enforce the system she was sworn to uphold, or expose the dark truths buried in the neural code.', 'https://mangadex.org/', 'uploads/6831b28deb9aa-Jane Doe 2.jpg', '2019-05-21', 'Ongoing', 'Suggestive', 0, '2025-05-24 11:50:37', '2025-05-24 12:27:53'),
+(5, 'Caesura of Despair', 'For centuries, the world has been silently governed by the Seraphic Accord, an ancient covenant between Heaven and Earth that keeps balance between light and darkness. But when the Caesura—a divine pause in the celestial harmony—suddenly ruptures, angels begin to fall from grace, twisted by despair, rage, and doubt.\r\n\r\nAzrael, a once-revered Archangel of Death, awakens in a scorched Earth with no memory of the war in Heaven and blackened wings that mark him as a traitor. Hunted by both Heaven\'s enforcers and Hell\'s agents, Azrael stumbles upon Mira, a mortal girl who seems to possess the soul of a lost seraph.\r\n\r\nAs corruption spreads across both mortal and celestial realms, Azrael and Mira must uncover the truth behind the Caesura, face the horrors born from divine sorrow, and confront a prophecy that threatens to end not only the heavens—but hope itself.', 'https://mangadex.org/', 'uploads/6831b617bbf5c-Makina.jpg', '2017-02-24', 'Completed', 'Suggestive', 0, '2025-05-24 12:05:43', '2025-05-24 12:27:55'),
+(6, 'The Lost Singer', 'In the land of Elaria, music is more than art—it\'s magic. Songs shape reality, heal wounds, summon storms, and even bind memories. But when the ruling Harmony Council silences entire regions to control the power of song, music becomes a weapon—and a threat.\r\n\r\nLyra, a girl with a haunting voice and no past, awakens in a remote village with only a melody in her heart and a name whispered in dreams. Gifted with a rare, ancient vocal magic called Echomancy, she soon discovers that her voice can awaken forgotten lands and revive the lost.\r\n\r\nPursued by masked silencers and guided by an old, broken bard, Lyra embarks on a perilous journey to restore the world’s forgotten songs—and her own missing identity. But as the echoes of rebellion grow louder, Lyra must decide: is she just a voice in the dark… or the chorus that will change everything?\r\n\r\n', 'https://mangadex.org/', 'uploads/6831b6df77bf4-Robin.jpg', '2025-02-12', 'Ongoing', 'Safe', 0, '2025-05-24 12:09:03', '2025-05-24 12:27:57'),
+(7, 'Spiral', 'In the quiet coastal town of Rokuzawa, strange phenomena begin to twist their way into daily life—literally. It starts subtly: a seashell growing into an impossible spiral, whirlpools in still water, a child drawing endless spirals with haunted eyes.\r\n\r\nThen people begin to change.\r\n\r\nAiko, a high school student grieving her brother’s recent disappearance, witnesses her neighbors becoming obsessed—consumed—by spiral patterns. Some disappear into whirlwinds of madness, others contort their bodies into grotesque spiral shapes, and the unlucky ones become part of the town itself.\r\n\r\nAs the spiral spreads like a curse, reality itself begins to warp. Time loops, streets twist into endless mazes, and the town is slowly closing in on itself, turning inward like a coiled spring waiting to snap.\r\n\r\nThere is no escape. There is only the Spiral.', 'https://mangadex.org/', 'uploads/6831b7225a30a-Strange Girl.png', '2024-06-12', 'Ongoing', 'Suggestive', 2, '2025-05-24 12:10:10', '2025-05-24 12:30:12');
 
 -- --------------------------------------------------------
 
@@ -231,19 +270,20 @@ CREATE TABLE `comictheme` (
 
 INSERT INTO `comictheme` (`comicThemeId`, `themeId`, `comicId`) VALUES
 (1, 25, 1),
-(2, 25, 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `follows`
---
-
-CREATE TABLE `follows` (
-  `followId` bigint(11) NOT NULL,
-  `userId` bigint(20) NOT NULL,
-  `comicId` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+(2, 25, 1),
+(3, 5, 2),
+(4, 6, 2),
+(5, 15, 2),
+(6, 16, 2),
+(7, 18, 2),
+(8, 10, 3),
+(9, 16, 4),
+(10, 22, 4),
+(11, 29, 4),
+(12, 29, 5),
+(13, 18, 6),
+(14, 18, 7),
+(15, 29, 7);
 
 -- --------------------------------------------------------
 
@@ -287,6 +327,31 @@ INSERT INTO `genres` (`genreId`, `genre`, `createdAt`) VALUES
 (23, 'Thriller', '2025-03-22 09:37:38'),
 (24, 'Tragedy', '2025-03-22 09:37:38'),
 (25, 'Wuxia', '2025-03-22 09:37:38');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` bigint(20) NOT NULL,
+  `comicId` bigint(11) NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `userId` bigint(20) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `comicId`, `message`, `type`, `userId`, `createdAt`) VALUES
+(2, 4, 'A new comic titled \'Psychotic Pass\' was added.', 'new_comic', 2, '2025-05-24 11:50:38'),
+(3, 5, 'A new comic titled \'Caesura of Despair\' was added.', 'new_comic', 2, '2025-05-24 12:05:43'),
+(4, 6, 'A new comic titled \'The Lost Singer\' was added.', 'new_comic', 2, '2025-05-24 12:09:03'),
+(5, 7, 'A new comic titled \'Spiral\' was added.', 'new_comic', 2, '2025-05-24 12:10:10');
 
 -- --------------------------------------------------------
 
@@ -362,6 +427,51 @@ CREATE TABLE `usercomicreview` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `userlibrary`
+--
+
+CREATE TABLE `userlibrary` (
+  `libraryId` bigint(20) NOT NULL,
+  `userId` bigint(20) NOT NULL,
+  `comicId` bigint(20) NOT NULL,
+  `readStatus` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `userlibrary`
+--
+
+INSERT INTO `userlibrary` (`libraryId`, `userId`, `comicId`, `readStatus`) VALUES
+(7, 1, 1, 'On Hold');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `usernotifications`
+--
+
+CREATE TABLE `usernotifications` (
+  `userNotificationId` bigint(20) NOT NULL,
+  `userId` bigint(20) NOT NULL,
+  `notificationId` bigint(20) NOT NULL,
+  `isRead` tinyint(1) NOT NULL DEFAULT 0,
+  `readAt` timestamp NULL DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `usernotifications`
+--
+
+INSERT INTO `usernotifications` (`userNotificationId`, `userId`, `notificationId`, `isRead`, `readAt`, `createdAt`) VALUES
+(1, 1, 2, 0, NULL, '2025-05-26 12:50:26'),
+(2, 1, 3, 0, NULL, '2025-05-26 12:50:26'),
+(3, 1, 4, 0, NULL, '2025-05-26 12:50:26'),
+(4, 1, 5, 1, '2025-05-26 13:07:08', '2025-05-26 12:50:26');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `userreportcomicreview`
 --
 
@@ -391,7 +501,7 @@ CREATE TABLE `users` (
   `gender` enum('Male','Female') NOT NULL,
   `birthday` date NOT NULL,
   `verification` int(11) NOT NULL DEFAULT 0,
-  `profilePicture` longblob NOT NULL,
+  `profilePicture` varchar(255) NOT NULL,
   `role` varchar(10) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -402,7 +512,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userId`, `firstName`, `lastName`, `email`, `password`, `phoneNumber`, `gender`, `birthday`, `verification`, `profilePicture`, `role`, `createdAt`, `updatedAt`) VALUES
-(1, 'Juan Carlos', 'Valdevieso', 'valdeviesojuan2@gmail.com', 'password123', '7675445645', 'Male', '2025-03-24', 0, '', 'User', '2025-03-22 09:37:56', '2025-03-22 09:37:56'),
+(1, 'Juan Carlos', 'Valdevieso', 'valdeviesojuan2@gmail.com', 'password123', '7675445645', 'Male', '2025-03-24', 0, '../../assets/profileImages/user_1_68306de817ecd.jpg', 'User', '2025-03-22 09:37:56', '2025-05-23 12:45:28'),
 (2, 'Josiah', 'Ratunil', 'ratunil.josiah30@gmail.com', 'password123', '678678', 'Male', '2025-03-02', 0, '', 'Admin', '2025-03-22 09:38:28', '2025-03-22 09:38:28');
 
 -- --------------------------------------------------------
@@ -528,18 +638,18 @@ ALTER TABLE `comictheme`
   ADD KEY `comicId` (`comicId`);
 
 --
--- Indexes for table `follows`
---
-ALTER TABLE `follows`
-  ADD PRIMARY KEY (`followId`),
-  ADD KEY `userId` (`userId`),
-  ADD KEY `comicId` (`comicId`);
-
---
 -- Indexes for table `genres`
 --
 ALTER TABLE `genres`
   ADD PRIMARY KEY (`genreId`);
+
+--
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `comicId` (`comicId`),
+  ADD KEY `userId` (`userId`);
 
 --
 -- Indexes for table `themes`
@@ -554,6 +664,22 @@ ALTER TABLE `usercomicreview`
   ADD PRIMARY KEY (`reviewId`),
   ADD KEY `comicId` (`comicId`),
   ADD KEY `userId` (`userId`);
+
+--
+-- Indexes for table `userlibrary`
+--
+ALTER TABLE `userlibrary`
+  ADD PRIMARY KEY (`libraryId`),
+  ADD KEY `comicId` (`comicId`),
+  ADD KEY `userId` (`userId`);
+
+--
+-- Indexes for table `usernotifications`
+--
+ALTER TABLE `usernotifications`
+  ADD PRIMARY KEY (`userNotificationId`),
+  ADD KEY `userId` (`userId`),
+  ADD KEY `notificationId` (`notificationId`);
 
 --
 -- Indexes for table `userreportcomicreview`
@@ -610,13 +736,13 @@ ALTER TABLE `announcements`
 -- AUTO_INCREMENT for table `artists`
 --
 ALTER TABLE `artists`
-  MODIFY `artistId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `artistId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `authors`
 --
 ALTER TABLE `authors`
-  MODIFY `authorId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `authorId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `chapters`
@@ -628,19 +754,19 @@ ALTER TABLE `chapters`
 -- AUTO_INCREMENT for table `comicartist`
 --
 ALTER TABLE `comicartist`
-  MODIFY `comicArtistId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `comicArtistId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `comicauthor`
 --
 ALTER TABLE `comicauthor`
-  MODIFY `comicAuthorId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `comicAuthorId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `comicgenre`
 --
 ALTER TABLE `comicgenre`
-  MODIFY `comicGenreId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `comicGenreId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `comicrating`
@@ -652,25 +778,25 @@ ALTER TABLE `comicrating`
 -- AUTO_INCREMENT for table `comics`
 --
 ALTER TABLE `comics`
-  MODIFY `comicId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `comicId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `comictheme`
 --
 ALTER TABLE `comictheme`
-  MODIFY `comicThemeId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `follows`
---
-ALTER TABLE `follows`
-  MODIFY `followId` bigint(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `comicThemeId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `genres`
 --
 ALTER TABLE `genres`
   MODIFY `genreId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `themes`
@@ -683,6 +809,18 @@ ALTER TABLE `themes`
 --
 ALTER TABLE `usercomicreview`
   MODIFY `reviewId` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `userlibrary`
+--
+ALTER TABLE `userlibrary`
+  MODIFY `libraryId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `usernotifications`
+--
+ALTER TABLE `usernotifications`
+  MODIFY `userNotificationId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `userreportcomicreview`
@@ -766,11 +904,11 @@ ALTER TABLE `comictheme`
   ADD CONSTRAINT `comictheme_ibfk_2` FOREIGN KEY (`comicId`) REFERENCES `comics` (`comicId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `follows`
+-- Constraints for table `notifications`
 --
-ALTER TABLE `follows`
-  ADD CONSTRAINT `follows_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `follows_ibfk_2` FOREIGN KEY (`comicId`) REFERENCES `comics` (`comicId`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `notifications`
+  ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`comicId`) REFERENCES `comics` (`comicId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`);
 
 --
 -- Constraints for table `usercomicreview`
@@ -778,6 +916,20 @@ ALTER TABLE `follows`
 ALTER TABLE `usercomicreview`
   ADD CONSTRAINT `usercomicreview_ibfk_1` FOREIGN KEY (`comicId`) REFERENCES `comics` (`comicId`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `usercomicreview_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `userlibrary`
+--
+ALTER TABLE `userlibrary`
+  ADD CONSTRAINT `userlibrary_ibfk_1` FOREIGN KEY (`comicId`) REFERENCES `comics` (`comicId`),
+  ADD CONSTRAINT `userlibrary_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`);
+
+--
+-- Constraints for table `usernotifications`
+--
+ALTER TABLE `usernotifications`
+  ADD CONSTRAINT `usernotifications_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `usernotifications_ibfk_2` FOREIGN KEY (`notificationId`) REFERENCES `notifications` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `userreportcomicreview`

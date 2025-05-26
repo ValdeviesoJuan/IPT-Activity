@@ -4,33 +4,19 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-$user_id = $_SESSION['userId'] ?? null;
+$userId = $_SESSION['userId'];
 
-if ($user_id !== null) {
-    $stmt = $conn->prepare("
-        SELECT id, comicId, message, createdAt, type, userId 
-        FROM notifications 
-        WHERE userId IS NULL OR userId = ?
-        ORDER BY createdAt DESC 
-        LIMIT 5
-    ");
-    $stmt->bind_param("i", $user_id);
-} else {
-    $stmt = $conn->prepare("
-        SELECT id, comicId, message, createdAt, type, userId 
-        FROM notifications 
-        WHERE userId IS NULL 
-        ORDER BY createdAt DESC 
-        LIMIT 5
-    ");
-}
+$stmt = $conn->prepare("
+    SELECT id, comicId, message, createdAt, type 
+    FROM notifications
+    ORDER BY createdAt DESC 
+    LIMIT 5
+");
 
 $stmt->execute();
 $result = $stmt->get_result();
 $notificationCount = $result->num_rows;
 ?>
-
-
 
 <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center" style="background-color: #191a1c;">
@@ -69,7 +55,6 @@ $notificationCount = $result->num_rows;
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
           <li class="dropdown-header" id="notificationHeader">
             You have 0 new notification<span id="notificationPlural">s</span>
-            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
           </li>
           <li><hr class="dropdown-divider"></li>
 
@@ -78,17 +63,17 @@ $notificationCount = $result->num_rows;
               <!-- JS will append <li> notification items here -->
             </ul>
           </li>
-
-          <li class="dropdown-footer">
-            <a href="#">Show all notifications</a>
-          </li>
         </ul>
       </li>
 
       <li class="nav-item dropdown pe-3">
 
         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-          <img src="../../assets/img/profileImage.png" alt="Profile" class="rounded-circle">
+          <img src="<?php echo !empty($_SESSION['authUser']['profilePicture']) ? $_SESSION['authUser']['profilePicture'] : '../../assets/img/profileImage.png'; ?>" 
+          alt="<?php echo htmlspecialchars($fullName); ?>'s Profile Picture"
+          class="rounded-circle me-2"
+          style="width: 35px; height: 35px; object-fit: cover; border: solid 1px white"
+          >
           <span class="d-none d-md-block dropdown-toggle ps-2" style="color: white;"><?php echo htmlspecialchars($fullName); ?></span>
         </a><!-- End Profile Iamge Icon -->
 
@@ -102,29 +87,9 @@ $notificationCount = $result->num_rows;
           </li>
 
           <li>
-            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+            <a class="dropdown-item d-flex align-items-center" href="../userProfile.php">
               <i class="bi bi-person"></i>
               <span>My Profile</span>
-            </a>
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li>
-            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-              <i class="bi bi-gear"></i>
-              <span>Account Settings</span>
-            </a>
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li>
-            <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-              <i class="bi bi-question-circle"></i>
-              <span>Need Help?</span>
             </a>
           </li>
           <li>
@@ -138,11 +103,11 @@ $notificationCount = $result->num_rows;
             </a>
           </li>
 
-        </ul><!-- End Profile Dropdown Items -->
-      </li><!-- End Profile Nav -->
+        </ul>
+      </li>
 
     </ul>
-  </nav><!-- End Icons Navigation -->
+  </nav>
 
   <style>
     .search-bar .search-form .main-search-input{
@@ -236,32 +201,46 @@ $notificationCount = $result->num_rows;
 
   <script>
   document.addEventListener("DOMContentLoaded", function () {
-    fetch('/IPT-Activity/IT322/view/admin/get_notifications.php')
-
+    fetch('/IPT-Activity/IT322/view/admin/getNotifications.php')
       .then(res => res.json())
       .then(data => {
-        console.log("Notification data:", data); // Debugging
+        console.log("Notification data:", data); 
 
-        const count = data.count || 0;
-        const list = data.notifications || [];
+        const count = data.unread_count || 0;
+        const list = data.unread_notifications || [];
 
         document.getElementById("notificationCount").textContent = count;
         document.getElementById("notificationHeader").innerHTML = `
           You have ${count} new notification${count !== 1 ? 's' : ''}
-          <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
         `;
 
         const container = document.getElementById("notificationList");
         container.innerHTML = "";
 
         if (list.length === 0) {
-          container.innerHTML = `<li class="notification-item text-center p-2">No notifications</li>`;
+          container.innerHTML = `<li class="notification-item text-center p-2">No new notifications</li>`;
           return;
         }
 
         list.forEach(item => {
           const li = document.createElement("li");
           li.className = "notification-item";
+          li.style.cursor = "pointer"; 
+
+          li.addEventListener("click", () => {
+            fetch(`/IPT-Activity/IT322/controller/markNotificationRead.php?id=${item.userNotificationId}`, {
+              method: "POST",
+            })
+            .then(res => res.json())
+            .then(response => {
+              if (response.success) {
+                li.style.opacity = "0.5";
+                li.style.pointerEvents = "none";
+              }
+            })
+            .catch(err => console.error("Error marking notification as read:", err));
+          });
+
           li.innerHTML = `
             <div>
               <h4>${item.type.replace("_", " ").toUpperCase()}</h4>
@@ -282,35 +261,33 @@ $notificationCount = $result->num_rows;
   });
 
   function renderNotifications(notifications) {
-  const notificationCount = notifications.length;
-  const countBadge = document.getElementById("notificationCount");
-  const header = document.getElementById("notificationHeader");
-  const plural = document.getElementById("notificationPlural");
-  const list = document.getElementById("notificationList");
+    const notificationCount = notifications.length;
+    const countBadge = document.getElementById("notificationCount");
+    const header = document.getElementById("notificationHeader");
+    const plural = document.getElementById("notificationPlural");
+    const list = document.getElementById("notificationList");
 
-  countBadge.textContent = notificationCount;
-  plural.textContent = notificationCount !== 1 ? "s" : "";
-  header.innerHTML = `You have ${notificationCount} new notification${notificationCount !== 1 ? "s" : ""} 
-    <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>`;
+    countBadge.textContent = notificationCount;
+    plural.textContent = notificationCount !== 1 ? "s" : "";
+    header.innerHTML = `You have ${notificationCount} new notification${notificationCount !== 1 ? "s" : ""}`;
 
-  list.innerHTML = ""; // clear existing notifications
+    list.innerHTML = ""; // clear existing notifications
 
-  if (notificationCount === 0) {
-    list.innerHTML = "<li class='text-center text-muted'>No notifications</li>";
-    return;
+    if (notificationCount === 0) {
+      list.innerHTML = "<li class='text-center text-muted'>No notifications</li>";
+      return;
+    }
+
+    notifications.forEach(notif => {
+      const li = document.createElement("li");
+      li.classList.add("notification-item", "px-3", "py-2");
+      li.innerHTML = `
+        <div><strong>${notif.message}</strong></div>
+        <small class="text-muted">${new Date(notif.createdAt).toLocaleString()}</small>
+      `;
+      list.appendChild(li);
+    });
   }
-
-  notifications.forEach(notif => {
-    const li = document.createElement("li");
-    li.classList.add("notification-item", "px-3", "py-2");
-    li.innerHTML = `
-      <div><strong>${notif.message}</strong></div>
-      <small class="text-muted">${new Date(notif.createdAt).toLocaleString()}</small>
-    `;
-    list.appendChild(li);
-  });
-}
   </script>
-
 
 </header><!-- End Header -->

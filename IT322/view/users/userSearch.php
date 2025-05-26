@@ -169,11 +169,11 @@ include("../users/includes/sidebar.php");
     ?>
     
     <div class="manga-card">
-        <a href="<?= $row['url'] ?>" target="_blank">
+        <a href="<?= $row['url'] ?>" target="_blank" class="comic-link" data-comic-id="<?= $row['comicId'] ?>">
             <img src="../../assets/<?= $row['cover'] ?>" alt="Comic Cover" class="manga-cover">
         </a>
         <div class="manga-details">
-            <a href="<?= $row['url'] ?>" target="_blank">
+            <a href="<?= $row['url'] ?>" target="_blank" class="comic-link" data-comic-id="<?= $row['comicId'] ?>">
                 <h3><?= $row["title"] ?></h3>
             </a>
 
@@ -765,6 +765,7 @@ include("../users/includes/sidebar.php");
         // Initial check on page load
         checkResetButton();
     });
+
     document.getElementById("search-btn").addEventListener("click", function () {
         let search = document.getElementById("search-input").value;
         let sortBy = document.getElementById("sortBy").value;
@@ -797,6 +798,24 @@ include("../users/includes/sidebar.php");
             document.querySelector(".manga-results").innerHTML = data;
         })
         .catch(error => console.error("Error:", error));
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".comic-link").forEach(link => {
+            link.addEventListener("click", function () {
+                const comicId = this.dataset.comicId;
+
+                if (!comicId) return;
+ 
+                fetch("../../controller/incrementView.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: `comicId=${comicId}`
+                });
+            });
+        });
     });
 </script>
 <?php
