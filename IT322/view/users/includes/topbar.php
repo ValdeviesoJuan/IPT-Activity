@@ -22,11 +22,11 @@ $notificationCount = $result->num_rows;
 <header id="header" class="header fixed-top d-flex align-items-center" style="background-color: #191a1c;">
 
   <div class="d-flex align-items-center justify-content-between">
+    <i class="bi bi-list toggle-sidebar-btn" style="color: white;"></i>
     <a href="index.php" class="logo d-flex align-items-center">
       <img src="../../assets/img/Logo1.png" alt="ComicZone Logo" style="max-width: 100px; max-height: 80px;">
       <span class="d-none d-lg-block" style="color: white; margin-left: -20px;">ComicZone</span>
     </a>
-    <i class="bi bi-list toggle-sidebar-btn" style="color: white;"></i>
   </div><!-- End Logo -->
 
   <div class="search-bar position-relative">
