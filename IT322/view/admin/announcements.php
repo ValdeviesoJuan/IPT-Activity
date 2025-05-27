@@ -7,6 +7,13 @@ include("./includes/sidebar.php");
 <div class="container mt-4">
     <h2 class="text-white">Announcements</h2>
 
+    <?php if (isset($_SESSION['message'])): ?>
+        <div class="alert alert-<?= $_SESSION['code'] == 'success' ? 'success' : 'danger'; ?> mt-3">
+            <?= $_SESSION['message']; ?>
+        </div>
+        <?php unset($_SESSION['message'], $_SESSION['code']); ?>
+    <?php endif; ?>
+    
     <!-- Add Announcement Form -->
     <div class="card bg-dark text-white p-3">
         <h4>Add Announcement</h4>
@@ -37,14 +44,13 @@ include("./includes/sidebar.php");
             </thead>
             <?php
             include("../../dB/config.php");
-
-            $query = "SELECT announcementId, title, message, 
-            DATE(datePosted) AS postDate, 
-            TIME(datePosted) AS postTime  
-            FROM announcements 
-            GROUP BY announcementId ASC 
-            LIMIT 5;";
-
+            $query = "SELECT `announcementId`, `userId`, `title`, `message`, 
+                             DATE(`datePosted`) AS `postDate`, 
+                             TIME(`datePosted`) AS `postTime`, 
+                             `updatedAt` 
+                      FROM `announcements` 
+                      ORDER BY `announcementId` DESC 
+                      LIMIT 5";
             $result = mysqli_query($conn, $query);
             ?>
             <tbody>
@@ -57,8 +63,8 @@ include("./includes/sidebar.php");
                         echo "<td style='width: 120px;'>{$row['postDate']}</td>";
                         echo "<td style='width: 120px;'>{$row['postTime']}</td>";
                         echo "<td>";
-                            echo "<button class='btn btn-warning btn-sm mx-1'>Edit</button>";
-                            echo "<button class='btn btn-danger btn-sm'>Delete</button>";
+                            echo "<a href='editAnnouncement.php?id={$row['announcementId']}' class='btn btn-warning btn-sm mx-1'>Edit</a>";
+                            echo "<a href='deleteAnnouncement.php?id={$row['announcementId']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this announcement?');\">Delete</a>";
                         echo "</td>";
                     echo "</tr>";
                 }
@@ -68,6 +74,4 @@ include("./includes/sidebar.php");
     </div>
 </div>
 
-<?php
-include("./includes/footer.php");
-?>
+<?php include("./includes/footer.php"); ?>
