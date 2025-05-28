@@ -85,12 +85,12 @@
                       <div class="invalid-feedback">Please enter your password!</div>
                     </div>
 
-                    <div class="col-12">
+                    <!-- <div class="col-12">
                       <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
                         <label class="form-check-label" for="rememberMe">Remember me</label>
                       </div>
-                    </div>
+                    </div> -->
                     <div class="col-12">
                       <button class="btn btn-primary-yellow w-100 text-white" type="submit" name="login" style="background-color: #FFD700;">Login</button>
                     </div>

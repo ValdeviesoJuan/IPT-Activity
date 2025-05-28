@@ -31,12 +31,12 @@
       </a>
     </li><!-- End Blank Page Nav -->
 
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a class="nav-link collapsed" href="settings.php" id="settings" style="background-color: #2c2c2c; color: #fff;">
         <i class="ri-settings-3-fill icon-link" id="settingsIcon" style="color: #fff;"></i>
         <span>Settings</span>
       </a>
-    </li><!-- End Blank Page Nav -->
+    </li> End Blank Page Nav -->
 
     <li class="nav-heading" style="color: rgb(255, 217, 0);">ComicZone</li> 
 
